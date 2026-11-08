@@ -1,0 +1,42 @@
+# Contexte de build Docker minimal — image plus rapide à construire
+# et aucun chemin/local-file de la machine de dev embarqué.
+
+# Dépendances (recréées par bun install dans le stage deps)
+node_modules
+
+# Artefacts de build locaux
+.next
+out
+build
+*.tsbuildinfo
+next-env.d.ts
+
+# Git & livrables
+.git
+.gitignore
+download
+
+# Base locale / données / logs
+db
+*.log
+dev.log
+server.log
+backups
+
+# Secrets locaux (le .env.example documente, le .env réel reste hors image)
+.env
+
+# Sandbox / plateforme / skills (propres à l'environnement de dev)
+skills
+upload
+mini-services
+agent-ctx
+.zscripts
+Caddyfile
+tests
+examples
+prompt
+
+# Uploads utilisateurs : volume Docker, jamais dans l'image
+public/uploads/*
+!public/uploads/.gitkeep
