@@ -22,10 +22,7 @@ ENV NEXT_TELEMETRY_DISABLED=1 \
     DATABASE_URL="file:/tmp/build.db" \
     NODE_ENV=production
 RUN npx prisma generate && \
-    npm run build && \
-    rm -rf node_modules && \
-    npm install --legacy-peer-deps --production && \
-    npm cache clean --force
+    npm run build
 
 # Stage 3: Runtime
 FROM base AS runner
@@ -41,6 +38,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/src/lib ./src/lib
 COPY --from=builder /app/src/i18n ./src/i18n
