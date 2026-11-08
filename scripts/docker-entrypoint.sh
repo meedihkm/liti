@@ -13,8 +13,8 @@ set -e
 echo "→ Préparation de la base de données…"
 
 # Prisma CLI : node_modules/.bin n'est pas copié dans l'image,
-# on appelle le binaire du package directement via bun.
-PRISMA="bun node_modules/prisma/build/index.js"
+# on appelle le binaire du package directement via npx.
+PRISMA="npx prisma"
 
 if echo "$DATABASE_URL" | grep -q "^postgres"; then
   echo "✗ DATABASE_URL pointe vers PostgreSQL mais le schéma Prisma"
@@ -30,4 +30,4 @@ $PRISMA db push --skip-generate --accept-data-loss
 
 echo "→ Démarrage du serveur Next.js…"
 echo "   (auto-seed au boot : base vierge + SEED_DEMO≠false → données démo)"
-exec bun server.js
+exec node server.js
