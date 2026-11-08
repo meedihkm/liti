@@ -1,0 +1,51 @@
+# ─────────────────────────────────────────────────────────────
+# Taqendurt — Configuration Coolify optimisée
+# Cette version laisse Coolify/Traefik gérer les ports externes
+# Utilisez ce fichier si vous avez des conflits de ports
+# ─────────────────────────────────────────────────────────────
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # PAS de mapping de ports externe - Coolify/Traefik gère via reverse proxy
+    # Le conteneur écoute sur 3000 en interne, accessible via le domaine
+    expose:
+      - "3000"
+    environment:
+      # SQLite sur volume persistant — AUCUNE configuration requise
+      DATABASE_URL: ${DATABASE_URL:-file:/app/data/taqendurt.db}
+      # Seed démo si base vierge (false pour démarrer vide)
+      SEED_DEMO: ${SEED_DEMO:-true}
+      # URL publique (SEO, sitemap, Open Graph)
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-}
+      # Email de notification des commandes
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      # SMTP optionnel — sans SMTP, les emails sont journalisés en base
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-}
+      SMTP_SECURE: ${SMTP_SECURE:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+    volumes:
+      # Images uploadées depuis le back-office → persistentes
+      - uploads:/app/public/uploads
+      # Base SQLite → persiste entre les reconstructions
+      - appdata:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3000/api/meta >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+    labels:
+      # Labels Coolify pour la détection automatique
+      - "coolify.managed=true"
+      - "coolify.port=3000"
+
+volumes:
+  uploads:
+  appdata:
