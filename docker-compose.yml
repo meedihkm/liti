@@ -1,0 +1,68 @@
+# ─────────────────────────────────────────────────────────────
+# Taqendurt — déploiement : app Next.js (standalone) + SQLite
+# Compatible Coolify / Traefik. PostgreSQL possible en option
+# (voir README.md § « Bascule PostgreSQL »).
+# Démarrage : docker compose up -d --build
+# ─────────────────────────────────────────────────────────────
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    # Toutes les variables sont passées « au travers » pour que
+    # l'onglet Environnement de Coolify (ou un .env local) les
+    # transmette au conteneur sans modifier ce fichier.
+    environment:
+      # SQLite sur volume persistant — AUCUNE configuration requise
+      DATABASE_URL: ${DATABASE_URL:-file:/app/data/taqendurt.db}
+      # Seed démo si base vierge (false pour démarrer vide)
+      SEED_DEMO: ${SEED_DEMO:-true}
+      # URL publique (SEO, sitemap, Open Graph)
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-}
+      # Email de notification des commandes (sinon : Paramètres admin)
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      # SMTP optionnel — sans SMTP, les emails sont journalisés
+      # en base (table MailLog, visibles dans l'admin)
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-}
+      SMTP_SECURE: ${SMTP_SECURE:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+    volumes:
+      # Images uploadées depuis le back-office → persistentes
+      - uploads:/app/public/uploads
+      # Base SQLite → persiste entre les reconstructions
+      - appdata:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3000/api/meta >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+# ── Option PostgreSQL (décommenter, voir README) ─────────────
+#  postgres:
+#    image: postgres:16-alpine
+#    restart: unless-stopped
+#    environment:
+#      POSTGRES_USER: taqendurt
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#      POSTGRES_DB: taqendurt
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U taqendurt -d taqendurt"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    # Pas de port exposé : accès interne uniquement (réseau docker)
+
+volumes:
+  uploads:
+  appdata:
+  # pgdata:
