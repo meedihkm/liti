@@ -5,8 +5,9 @@
 
 FROM node:20-alpine AS deps
 WORKDIR /app
-# Dépendances
+# Dépendances + schéma Prisma (pour le postinstall)
 COPY package.json ./
+COPY prisma ./prisma
 RUN npm install --legacy-peer-deps
 
 FROM node:20-alpine AS builder
