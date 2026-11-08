@@ -6,8 +6,8 @@
 FROM oven/bun:1.2-slim AS deps
 WORKDIR /app
 # Dépendances (avec le lockfile pour la reproductibilité)
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+COPY package.json bun.lock* ./
+RUN bun install --no-save
 
 FROM oven/bun:1.2-slim AS builder
 WORKDIR /app
