@@ -10,10 +10,13 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    # PAS de mapping de ports externe - Coolify/Traefik gère via reverse proxy
-    # Le conteneur écoute sur 3000 en interne, accessible via le domaine
-    expose:
-      - "3000"
+    # Option 1 : Laisser Coolify/Traefik gérer (décommenter expose)
+    # expose:
+    #   - "3000"
+    
+    # Option 2 : Port spécifique pour éviter les conflits (recommandé si multiples apps)
+    ports:
+      - "3005:3000"
     environment:
       # SQLite sur volume persistant — AUCUNE configuration requise
       DATABASE_URL: ${DATABASE_URL:-file:/app/data/taqendurt.db}

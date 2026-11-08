@@ -4,7 +4,8 @@
 
 ### Port de l'application
 - **Port interne du conteneur :** `3000`
-- **Port exposé par défaut :** `3000:3000`
+- **Port exposé :** `3005:3000` (externe:interne)
+- **Raison :** Éviter les conflits avec d'autres projets Next.js dans Coolify
 
 ⚠️ **IMPORTANT :** Coolify gère automatiquement les ports via son reverse proxy (Traefik). Vous n'avez PAS besoin d'exposer le port 3000 publiquement.
 

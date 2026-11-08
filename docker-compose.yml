@@ -11,8 +11,10 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    # Port 3005 pour éviter les conflits avec d'autres apps Next.js dans Coolify
+    # Format: PORT_EXTERNE:PORT_INTERNE (3005:3000)
     ports:
-      - "3000:3000"
+      - "3005:3000"
     # Toutes les variables sont passées « au travers » pour que
     # l'onglet Environnement de Coolify (ou un .env local) les
     # transmette au conteneur sans modifier ce fichier.
