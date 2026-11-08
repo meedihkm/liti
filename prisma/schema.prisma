@@ -1,0 +1,239 @@
+// ─────────────────────────────────────────────────────────────
+// Robes Kabyles — Schéma de données (Prisma + SQLite)
+// Note : SQLite ne supporte pas les enums ni les listes primitives,
+// les statuts/JSON sont donc stockés en String et validés en code (Zod).
+// Voir docs/ARCHITECTURE.md pour le diagramme relationnel complet.
+// ─────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ── Authentification admin ────────────────────────────────────
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String // bcrypt
+  name         String
+  role         String    @default("admin") // "admin" | "staff"
+  createdAt    DateTime  @default(now())
+  sessions     Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique @default(cuid()) // cookie httpOnly rk_session
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+// ── Catalogue ─────────────────────────────────────────────────
+
+model Category {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  name          String
+  nameAr        String
+  description   String    @default("")
+  descriptionAr String    @default("")
+  image         String    @default("")
+  order         Int       @default(0)
+  products      Product[]
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  title           String
+  titleAr         String
+  description     String   @default("")
+  descriptionAr   String   @default("")
+  basePrice       Int // prix de base en DA
+  customSizeFee   Int      @default(1500) // supplément sur-mesure
+  leadTimeDays    Int      @default(14) // délai de confection estimé
+  featured        Boolean  @default(false)
+  visible         Boolean  @default(true)
+  hasCustomLength Boolean  @default(false)
+  occasion        String   @default("") // mariage | fiancailles | fete | quotidien
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  categoryId      String
+  category        Category @relation(fields: [categoryId], references: [id])
+  images          ProductImage[]
+  fabrics         ProductFabric[]
+  colors          ProductColor[]
+  embroideries    ProductEmbroidery[]
+  // Pas de relation Order → OrderItem : OrderItem ne conserve qu'un
+  // snapshot (productId en String simple) pour rester stable dans le temps.
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String  @default("")
+  order     Int     @default(0)
+}
+
+// Tissus (satin, soie, mlifa, velours, mousseline…)
+model Fabric {
+  id         String          @id @default(cuid())
+  name       String
+  nameAr     String
+  image      String          @default("")
+  priceExtra Int             @default(0)
+  products   ProductFabric[]
+}
+
+model Color {
+  id       String         @id @default(cuid())
+  name     String
+  nameAr   String
+  hex      String
+  products ProductColor[]
+}
+
+model EmbroideryOption {
+  id         String              @id @default(cuid())
+  name       String
+  nameAr     String
+  priceExtra Int                 @default(0)
+  products   ProductEmbroidery[]
+}
+
+// Disponibilité tissu ↔ produit (+ supplément propre au produit,
+// + couleurs autorisées pour ce tissu sur ce produit en JSON)
+model ProductFabric {
+  id          String  @id @default(cuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  fabricId    String
+  fabric      Fabric  @relation(fields: [fabricId], references: [id], onDelete: Cascade)
+  priceExtra  Int     @default(0)
+  colorsJson  String  @default("[]") // liste des colorId disponibles
+}
+
+model ProductColor {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  colorId   String
+  color     Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
+}
+
+model ProductEmbroidery {
+  id           String            @id @default(cuid())
+  productId    String
+  product      Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  embroideryId String
+  embroidery   EmbroideryOption  @relation(fields: [embroideryId], references: [id], onDelete: Cascade)
+}
+
+// ── Commandes ─────────────────────────────────────────────────
+// OrderItem conserve un SNAPSHOT (noms, options, prix) pour que
+// modifier le catalogue plus tard ne change pas les anciennes commandes.
+
+model Order {
+  id            String               @id @default(cuid())
+  number        String               @unique // ex. RK-2026-0001
+  status        String               @default("pending")
+  // pending → validated → crafting → ready → shipped → delivered ; cancelled ; refused
+  fullName      String
+  phone         String
+  email         String               @default("")
+  wilayaCode    Int
+  wilayaName    String
+  commune       String
+  address       String               @default("")
+  deliveryMode  String               @default("home") // home | pickup
+  shippingFee   Int                  @default(0)
+  subtotal      Int                  @default(0)
+  total         Int                  @default(0)
+  note          String               @default("")
+  internalNote  String               @default("")
+  refusalReason String               @default("")
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  items         OrderItem[]
+  history       OrderStatusHistory[]
+}
+
+model OrderItem {
+  id               String  @id @default(cuid())
+  orderId          String
+  order            Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId        String  @default("")
+  productName      String
+  productImage     String  @default("")
+  fabricName       String  @default("")
+  colorName        String  @default("")
+  colorHex         String  @default("")
+  embroideryJson   String  @default("[]") // [{ name, nameAr, priceExtra }]
+  size             String  @default("") // S…XXL ou "sur-mesure"
+  measurementsJson String  @default("{}")
+  length           String  @default("") // courte | mi-longue | longue
+  quantity         Int     @default(1)
+  unitPrice        Int     @default(0) // base + suppléments (hors livraison)
+  lineTotal        Int     @default(0)
+  note             String  @default("")
+}
+
+model OrderStatusHistory {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    String
+  note      String   @default("")
+  actor     String   @default("system") // "system" | nom de l'admin
+  createdAt DateTime @default(now())
+}
+
+// ── Livraison (frais par wilaya) ──────────────────────────────
+
+model ShippingRate {
+  wilayaCode Int     @id
+  homePrice  Int     @default(600)
+  active     Boolean @default(true)
+}
+
+// ── Contact ───────────────────────────────────────────────────
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String   @default("")
+  email     String   @default("")
+  subject   String   @default("")
+  message   String
+  status    String   @default("new") // new | read | handled
+  createdAt DateTime @default(now())
+}
+
+// ── Paramètres du site (clé/valeur) ───────────────────────────
+
+model SiteSetting {
+  key   String @id
+  value String
+}
+
+// ── Journal des emails (notification admin) ───────────────────
+// Si SMTP_HOST n'est pas configuré, l'email est journalisé ici
+// au lieu d'être envoyé (mode dégradé explicite).
+
+model MailLog {
+  id        String   @id @default(cuid())
+  to        String
+  subject   String
+  body      String
+  status    String   @default("logged") // sent | logged | error
+  error     String   @default("")
+  createdAt DateTime @default(now())
+}
