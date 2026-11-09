@@ -11,12 +11,19 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    # Port 3000 standard pour Next.js - Coolify route automatiquement via Traefik
+    # Port 6544 externe pour éviter les conflits avec d'autres projets Coolify
+    # Port 3000 interne pour Next.js
     ports:
-      - "3000:3000"
+      - "6544:3000"
     labels:
       - "coolify.managed=true"
-      - "coolify.port=3000"
+      - "coolify.port=6544"
+      - "traefik.enable=true"
+      - "traefik.http.routers.taqendurt.rule=Host(`myrobe-glize.com`) || Host(`www.myrobe-glize.com`)"
+      - "traefik.http.routers.taqendurt.entrypoints=websecure"
+      - "traefik.http.routers.taqendurt.tls=true"
+      - "traefik.http.routers.taqendurt.tls.certresolver=letsencrypt"
+      - "traefik.http.services.taqendurt.loadbalancer.server.port=6544"
     # Toutes les variables sont passées « au travers » pour que
     # l'onglet Environnement de Coolify (ou un .env local) les
     # transmette au conteneur sans modifier ce fichier.
@@ -25,8 +32,8 @@ services:
       DATABASE_URL: ${DATABASE_URL:-file:/app/data/taqendurt.db}
       # Seed démo si base vierge (false pour démarrer vide)
       SEED_DEMO: ${SEED_DEMO:-true}
-      # URL publique (SEO, sitemap, Open Graph)
-      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-}
+      # URL publique avec SSL (SEO, sitemap, Open Graph)
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://myrobe-glize.com}
       # Email de notification des commandes (sinon : Paramètres admin)
       ADMIN_EMAIL: ${ADMIN_EMAIL:-}
       # SMTP optionnel — sans SMTP, les emails sont journalisés
