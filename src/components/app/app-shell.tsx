@@ -14,6 +14,8 @@ import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import { CustomCursor } from "@/components/layout/custom-cursor";
 import { SplashScreen } from "@/components/layout/splash-screen";
 import { YazMark } from "@/components/layout/berber-divider";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
+import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
 import { HomeView } from "@/components/home/home-view";
 
 // ─────────────────────────────────────────────────────────────
@@ -215,6 +217,8 @@ function Shell() {
     <div className="flex min-h-screen flex-col">
       <SplashScreen />
       <CustomCursor />
+      <ServiceWorkerRegister />
+      <InstallPrompt />
       {!isAdmin && <Navbar />}
       <main id="main" className="flex-1">
         {!isAdmin && <div className="h-16" aria-hidden="true" />}

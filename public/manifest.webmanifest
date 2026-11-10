@@ -1,0 +1,73 @@
+{
+  "name": "Taqendurt — Robes kabyles sur mesure",
+  "short_name": "Taqendurt",
+  "description": "Boutique de robes kabyles traditionnelles sur mesure. Tissu, couleur, broderies personnalisées. Livraison en Algérie.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1a1814",
+  "background_color": "#1a1814",
+  "lang": "fr",
+  "dir": "auto",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Boutique",
+      "short_name": "Boutique",
+      "description": "Explorer le catalogue de robes",
+      "url": "/#/catalog",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Suivre ma commande",
+      "short_name": "Suivi",
+      "description": "Suivre l'état de ma commande",
+      "url": "/#/track",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/og-cover.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    }
+  ]
+}

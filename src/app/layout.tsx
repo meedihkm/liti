@@ -29,8 +29,10 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   title: {
     default: "Taqendurt — Robes kabyles traditionnelles & modernes | Algérie",
@@ -49,6 +51,12 @@ export const metadata: Metadata = {
     "فساتين قبائلية",
   ],
   authors: [{ name: "Taqendurt" }],
+  applicationName: "Taqendurt",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Taqendurt",
+  },
   openGraph: {
     type: "website",
     locale: "fr_DZ",
@@ -75,6 +83,9 @@ export const viewport: Viewport = {
   ],
   width: "device-width",
   initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
