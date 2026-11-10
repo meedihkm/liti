@@ -16,10 +16,26 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/uploads') ||
     pathname.includes('.')
   ) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    
+    // Add cache headers for static assets
+    if (pathname.match(/\.(jpg|jpeg|png|gif|webp|avif|svg|ico|woff|woff2|ttf|eot)$/)) {
+      response.headers.set(
+        'Cache-Control',
+        'public, max-age=31536000, immutable'
+      );
+    }
+    
+    return response;
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  
+  // Add performance headers
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  
+  return response;
 }
 
 export const config = {

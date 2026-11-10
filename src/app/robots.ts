@@ -1,15 +1,16 @@
-import type { MetadataRoute } from "next";
+import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://myrobe-giize.com';
+
   return {
     rules: [
       {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/api/admin", "/api/orders"],
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/admin', '/api'],
       },
     ],
-    sitemap: base + "/sitemap.xml",
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }

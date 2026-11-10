@@ -1,16 +1,64 @@
-import type { MetadataRoute } from "next";
+import { MetadataRoute } from 'next';
+import { prisma } from '@/lib/db';
 
-// Sitemap — le site est une SPA hash-routée depuis la route unique « / ».
-// Les fragments (#/catalog…) ne constituent pas des URL séparées pour les
-// crawlers : on déclare la racine + les fichiers statiques clés.
-export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  return [
-    {
-      url: base + "/",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-  ];
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://myrobe-giize.com';
+
+  // Static pages
+  const staticPages = [
+    '',
+    '/galerie',
+    '/catalogue',
+    '/configurateur',
+    '/devis',
+    '/suivi',
+    '/contact',
+    '/a-propos',
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: route === '' ? 1.0 : 0.8,
+  }));
+
+  // Products
+  const products = await prisma.product.findMany({
+    where: { visible: true },
+    select: { id: true, updatedAt: true },
+  });
+
+  const productPages = products.map((product) => ({
+    url: `${baseUrl}/catalogue/${product.id}`,
+    lastModified: product.updatedAt,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
+  // Galleries
+  const galleries = await prisma.gallery.findMany({
+    where: { visible: true },
+    select: { slug: true, updatedAt: true },
+  });
+
+  const galleryPages = galleries.map((gallery) => ({
+    url: `${baseUrl}/galerie/${gallery.slug}`,
+    lastModified: gallery.updatedAt,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  // Blog posts (if any)
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true },
+    select: { slug: true, updatedAt: true },
+  });
+
+  const blogPages = posts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt,
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
+  return [...staticPages, ...productPages, ...galleryPages, ...blogPages];
 }
