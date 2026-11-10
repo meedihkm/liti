@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 // lentement (canvas léger, ~40 particules). Désactivé si
 // prefers-reduced-motion, save-data ou appareil faible.
 // Uniquement transform/opacity via dessin canvas 60 fps.
+// Arrêté automatiquement hors écran (Intersection Observer).
 // ─────────────────────────────────────────────────────────────
 
 interface Particle {
@@ -31,14 +32,18 @@ export function ParticlesBackground({ density = 34 }: { density?: number }) {
       (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData ===
       true
     const lowMemory =
-      ((navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8) < 4
+      ((navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8) < 4 ||
+      (navigator.hardwareConcurrency ?? 8) <= 4
+
+    // Mode léger : désactiver sur reduced-motion, save-data, appareils faibles
     if (reduced || saveData || lowMemory) return
 
-    const ctx = canvas.getContext("2d")
+    const ctx = canvas.getContext("2d", { alpha: true })
     if (!ctx) return
 
     let raf = 0
     let visible = true
+    let inView = false
     let particles: Particle[] = []
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
 
@@ -58,7 +63,8 @@ export function ParticlesBackground({ density = 34 }: { density?: number }) {
     }
 
     const draw = (time: number) => {
-      if (!visible) {
+      // Arrêter l'animation si hors écran ou page cachée
+      if (!visible || !inView) {
         raf = requestAnimationFrame(draw)
         return
       }
@@ -97,14 +103,24 @@ export function ParticlesBackground({ density = 34 }: { density?: number }) {
       visible = document.visibilityState === "visible"
     }
 
+    // Intersection Observer pour arrêter l'animation hors écran
+    const observer = new IntersectionObserver(
+      (entries) => {
+        inView = entries[0]?.isIntersecting ?? false
+      },
+      { rootMargin: "100px" }
+    )
+
     resize()
     raf = requestAnimationFrame(draw)
-    const observer = new ResizeObserver(resize)
+    const resizeObserver = new ResizeObserver(resize)
+    resizeObserver.observe(canvas)
     observer.observe(canvas)
     document.addEventListener("visibilitychange", onVisibility)
 
     return () => {
       cancelAnimationFrame(raf)
+      resizeObserver.disconnect()
       observer.disconnect()
       document.removeEventListener("visibilitychange", onVisibility)
     }
@@ -115,6 +131,7 @@ export function ParticlesBackground({ density = 34 }: { density?: number }) {
       ref={canvasRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 h-full w-full text-gold"
+      style={{ contentVisibility: "auto", contain: "layout style paint" }}
     />
   )
 }

@@ -53,13 +53,24 @@ const SizeGuideView = lazy<Record<string, never>>(() => import("@/components/pag
 const LegalView = lazy<{ slug: string }>(() => import("@/components/pages/legal-view"), "LegalView")
 const AdminApp = lazy<Record<string, never>>(() => import("@/components/admin/admin-app"), "AdminApp")
 
-/** Défilement fluide Lenis — différé, désactivé (reduced-motion / appareils faibles) */
+/** Défilement fluide Lenis — différé, désactivé sur tactile/reduced-motion/appareils faibles */
 function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
+    // Désactiver Lenis sur appareils tactiles (scroll natif Android/iOS)
+    const isTouch =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      (navigator as Navigator & { msMaxTouchPoints?: number }).msMaxTouchPoints > 0
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const saveData =
       (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true
-    if (reduced || saveData) return
+    const lowMemory =
+      ((navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8) < 4 ||
+      (navigator.hardwareConcurrency ?? 8) <= 4
+
+    // Mode léger : désactiver Lenis sur tactile, reduced-motion, save-data, ou appareils faibles
+    if (isTouch || reduced || saveData || lowMemory) return
 
     let raf = 0
     let destroyed = false
@@ -67,7 +78,14 @@ function SmoothScroll({ children }: { children: ReactNode }) {
 
     import("lenis").then(({ default: Lenis }) => {
       if (destroyed) return
-      lenis = new Lenis({ duration: 1.05, smoothWheel: true, wheelMultiplier: 0.95 })
+      // syncTouch désactivé pour éviter les problèmes de rendu
+      lenis = new Lenis({ 
+        duration: 1.05, 
+        smoothWheel: true, 
+        wheelMultiplier: 0.95,
+        syncTouch: false,
+        touchMultiplier: 0
+      })
       setLenis(lenis)
       const loop = (time: number) => {
         lenis?.raf(time)

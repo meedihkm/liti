@@ -227,6 +227,16 @@
     border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
   }
 
+  /* ── Mode léger mobile : désactiver backdrop-filter (Android performance) ── */
+  @media (max-width: 768px) {
+    .glass,
+    .glass-strong {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: color-mix(in oklab, var(--card) 92%, transparent) !important;
+    }
+  }
+
   /* ── Motifs berbères géométriques (lignes fines) ── */
   .berber-grid {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 4 L52 28 L28 52 L4 28 Z' fill='none' stroke='%23E8B64C' stroke-opacity='0.13' stroke-width='1'/%3E%3Cpath d='M28 16 L40 28 L28 40 L16 28 Z' fill='none' stroke='%23E8B64C' stroke-opacity='0.08' stroke-width='1'/%3E%3C/svg%3E");
