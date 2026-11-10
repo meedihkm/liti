@@ -55,7 +55,7 @@ export function OrganizationStructuredData() {
       telephone: '+213-XXX-XXX-XXX',
       contactType: 'Service Client',
       areaServed: 'DZ',
-      availableLanguage: ['fr', 'ar'],
+      availableLanguage: ['fr', 'ar', 'kab'],
     },
     sameAs: [
       'https://facebook.com/taqendurt',

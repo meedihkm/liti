@@ -102,13 +102,16 @@ export function Navbar() {
         {/* Actions */}
         <div className="flex items-center gap-1.5">
           <button
-            onClick={() => setLang(lang === "fr" ? "ar" : "fr")}
+            onClick={() => {
+              const next = lang === "fr" ? "ar" : lang === "ar" ? "kab" : "fr";
+              setLang(next);
+            }}
             className="flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-foreground/80 transition-colors hover:text-gold"
             aria-label={t("common.lang.switch")}
             title={t("common.lang.switch")}
           >
             <Languages className="h-4 w-4" />
-            <span>{lang === "fr" ? "AR" : "FR"}</span>
+            <span>{lang === "fr" ? "AR" : lang === "ar" ? "KAB" : "FR"}</span>
           </button>
 
           <button

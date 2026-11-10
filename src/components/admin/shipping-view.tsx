@@ -38,10 +38,18 @@ import {
 import { cn } from "@/lib/utils";
 
 /** Champ localisé (wilayaName / wilayaNameAr…) sans index signature */
-function loc(obj: object, key: string, lang: "fr" | "ar"): string {
+function loc(obj: object, key: string, lang: "fr" | "ar" | "kab"): string {
   const o = obj as Record<string, unknown>;
-  const val = lang === "ar" ? o[`${key}Ar`] : o[key];
-  return typeof val === "string" ? val : String(o[key] ?? "");
+  if (lang === "ar") {
+    const val = o[`${key}Ar`];
+    if (typeof val === "string" && val) return val;
+  }
+  if (lang === "kab") {
+    const val = o[`${key}Kab`];
+    if (typeof val === "string" && val) return val;
+  }
+  const val = o[key];
+  return typeof val === "string" ? val : "";
 }
 
 interface RateDraft {

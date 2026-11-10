@@ -42,8 +42,10 @@ model Category {
   slug          String    @unique
   name          String
   nameAr        String
+  nameKab       String    @default("") // Kabyle
   description   String    @default("")
   descriptionAr String    @default("")
+  descriptionKab String   @default("") // Kabyle
   image         String    @default("")
   order         Int       @default(0)
   products      Product[]
@@ -53,8 +55,10 @@ model Product {
   id              String   @id @default(cuid())
   title           String
   titleAr         String
+  titleKab        String   @default("") // Kabyle
   description     String   @default("")
   descriptionAr   String   @default("")
+  descriptionKab  String   @default("") // Kabyle
   basePrice       Int // prix de base en DA
   customSizeFee   Int      @default(1500) // supplément sur-mesure
   leadTimeDays    Int      @default(14) // délai de confection estimé
@@ -88,6 +92,7 @@ model Fabric {
   id         String          @id @default(cuid())
   name       String
   nameAr     String
+  nameKab    String          @default("") // Kabyle
   image      String          @default("")
   priceExtra Int             @default(0)
   products   ProductFabric[]
@@ -97,6 +102,7 @@ model Color {
   id       String         @id @default(cuid())
   name     String
   nameAr   String
+  nameKab  String         @default("") // Kabyle
   hex      String
   products ProductColor[]
 }
@@ -105,6 +111,7 @@ model EmbroideryOption {
   id         String              @id @default(cuid())
   name       String
   nameAr     String
+  nameKab    String              @default("") // Kabyle
   priceExtra Int                 @default(0)
   products   ProductEmbroidery[]
 }
@@ -249,8 +256,10 @@ model Gallery {
   slug          String        @unique
   title         String
   titleAr       String
+  titleKab      String        @default("") // Kabyle
   description   String        @default("")
   descriptionAr String        @default("")
+  descriptionKab String       @default("") // Kabyle
   coverImage    String        @default("") // image principale
   type          String        @default("lookbook") // lookbook | collection | inspiration
   visible       Boolean       @default(true)
@@ -268,6 +277,7 @@ model GalleryImage {
   alt         String   @default("")
   caption     String   @default("")
   captionAr   String   @default("")
+  captionKab  String   @default("") // Kabyle
   productId   String   @default("") // lien vers produit si applicable
   order       Int      @default(0)
   createdAt   DateTime @default(now())
@@ -280,8 +290,10 @@ model ContentBlock {
   slug        String   @unique
   title       String   @default("")
   titleAr     String   @default("")
+  titleKab    String   @default("") // Kabyle
   content     String   @default("") // HTML ou markdown
   contentAr   String   @default("")
+  contentKab  String   @default("") // Kabyle
   type        String   @default("hero") // hero | banner | text | cta
   visible     Boolean  @default(true)
   order       Int      @default(0)
@@ -385,6 +397,7 @@ model OrderAdvancement {
   stage       String   // fabric_cutting | embroidery | assembly | finishing | quality_check
   title       String
   titleAr     String
+  titleKab    String   @default("") // Kabyle
   description String   @default("")
   photos      String   @default("[]") // JSON array d'URLs
   progress    Int      @default(0) // 0-100%
@@ -427,10 +440,13 @@ model BlogPost {
   slug          String   @unique
   title         String
   titleAr       String
+  titleKab      String   @default("") // Kabyle
   excerpt       String   @default("")
   excerptAr     String   @default("")
+  excerptKab    String   @default("") // Kabyle
   content       String   @default("") // HTML or Markdown
   contentAr     String   @default("")
+  contentKab    String   @default("") // Kabyle
   coverImage    String   @default("")
   author        String   @default("Taqendurt")
   tags          String   @default("[]") // JSON array

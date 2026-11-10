@@ -1,7 +1,6 @@
 // ─────────────────────────────────────────────────────────────
 // i18n — noyau : fusion des dictionnaires par domaine + t()
-// Langues : fr (défaut), ar (RTL). Prêt pour « kab » (tamazight
-// latin) : ajouter un fichier dict et l'inscrire dans DOMAINS.
+// Langues : fr (défaut), ar (RTL), kab (tamazight/kabyle)
 // ─────────────────────────────────────────────────────────────
 import { common } from "./dict/common"
 import { home } from "./dict/home"
@@ -11,16 +10,24 @@ import { checkout } from "./dict/checkout"
 import { pages } from "./dict/pages"
 import { admin } from "./dict/admin"
 
-export type Lang = "fr" | "ar"
+export type Lang = "fr" | "ar" | "kab"
 export type Dir = "ltr" | "rtl"
 
 export const LANGS: { code: Lang; label: string; dir: Dir }[] = [
   { code: "fr", label: "Français", dir: "ltr" },
   { code: "ar", label: "العربية", dir: "rtl" },
+  { code: "kab", label: "Taqbaylit", dir: "ltr" },
 ]
 
 export function dirOf(lang: Lang): Dir {
   return lang === "ar" ? "rtl" : "ltr"
+}
+
+/** Get the localized suffix for database fields (Ar, Kab) */
+export function getLocaleSuffix(lang: Lang): string {
+  if (lang === "ar") return "Ar"
+  if (lang === "kab") return "Kab"
+  return ""
 }
 
 // Fusion profonde : fr sert de base (clés manquantes → fallback fr)
@@ -59,7 +66,17 @@ const arDict = deepMerge(frDict, {
   admin: admin.ar,
 } as Record<string, unknown>)
 
-const DICTS: Record<Lang, Record<string, unknown>> = { fr: frDict, ar: arDict }
+const kabDict = deepMerge(frDict, {
+  common: common.kab,
+  home: home.kab,
+  catalog: catalog.kab,
+  product: product.kab,
+  checkout: checkout.kab,
+  pages: pages.kab,
+  admin: admin.kab,
+} as Record<string, unknown>)
+
+const DICTS: Record<Lang, Record<string, unknown>> = { fr: frDict, ar: arDict, kab: kabDict }
 
 function lookup(dict: Record<string, unknown>, key: string): unknown {
   let node: unknown = dict
@@ -88,12 +105,21 @@ export function translate(lang: Lang, key: string, vars?: Record<string, string 
   return value as string
 }
 
-/** Choisit le champ localisé d'un objet { title, titleAr } */
+/** Choisit le champ localisé d'un objet { title, titleAr, titleKab } */
 export function pickLocalized<T extends object>(lang: Lang, obj: T, baseKey: string): string {
   const asRecord = obj as Record<string, unknown>
-  const arKey = `${baseKey}Ar`
-  const val = lang === "ar" ? asRecord[arKey] : asRecord[baseKey]
-  return typeof val === "string" ? val : String(asRecord[baseKey] ?? "")
+  if (lang === "ar") {
+    const arKey = `${baseKey}Ar`
+    const val = asRecord[arKey]
+    if (typeof val === "string" && val) return val
+  }
+  if (lang === "kab") {
+    const kabKey = `${baseKey}Kab`
+    const val = asRecord[kabKey]
+    if (typeof val === "string" && val) return val
+  }
+  const val = asRecord[baseKey]
+  return typeof val === "string" ? val : ""
 }
 
 export const t = translate

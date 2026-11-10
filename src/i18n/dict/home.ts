@@ -114,4 +114,61 @@ export const home = {
       button: "اطلبي عبر واتساب",
     },
   },
+  kab: {
+    hero: {
+      badge: "Lxidma n uxiyyaḍ — Tizi Wezzu",
+      cta1: "Wali taḥanut",
+      cta2: "Ɛawed s teɣzi",
+      scroll: "Ẓuɣer",
+      stat1: "imesukal usligen",
+      stat2: "temnadin i nessileɣ",
+      stat3: "iseggasen n tezmert",
+    },
+    featured: {
+      title: "Imesukal ixataren",
+      subtitle: "Timerniwt-nneɣ i ttusutren aṭṭas, zemren ad ttwasenfaren",
+      from: "seg",
+    },
+    categories: { title: "Tegrummiwin-nneɣ", subtitle: "Aẓar, lɛid, tatrart d warrac" },
+    steps: {
+      title: "Ɛawed deg 4 n tarrayin",
+      subtitle: "Fessus, ula seg tiliɣri-ik",
+      s1: { title: "Fren", desc: "Qarqes-d taḥanut u fren-d ameskal-ik." },
+      s2: { title: "Senfar", desc: "Abadil, ini, teɣzi neɣ tektayin, aneqqac." },
+      s3: { title: "Sefqed", desc: "Ačcar tiferkit, ad awen-nessiwel i usentem." },
+      s4: { title: "Ṭṭef", desc: "Axiyyaḍ s ufus u dɣa asiweḍ ɣer 58 n temnaḍin." },
+    },
+    testimonials: {
+      title: "Fllas-nneɣ i ḥulfen",
+      subtitle: "Timɣariyin seg tmurt akk",
+      items: [
+        {
+          name: "Lynda, Lezzayer",
+          text: "Tamenuɣt-iw n teɣrit tella am deg tugniwin. Aneqqac d aceɛlal u teɣzi d tameɣtut s teɣzi.",
+        },
+        {
+          name: "Nadjia, Bgayet",
+          text: "Ɛawdeɣ ass n letnayen iḍ, assiwel n usentem azekka-s n letnayen, asiweḍ deg 12 n wussan. Tarbaɛt tuttimt.",
+        },
+        {
+          name: "Sarah, Wahran",
+          text: "Kaṛaku n yelli-s issewhec tawacult akk. Axeddim n ufus n tidet, am tezdayin timeqqranin.",
+        },
+      ],
+    },
+    atelist: {
+      title: "Seg ifassen-nneɣ ɣur-wen",
+      text: "Yal tamenuɣt tettwaggez, tettwaqqec u tettwaṛkaḍ di lxidma-nneɣ n Tizi Wezzu sɣur tessifiyyin i iḥeggan tamusni i d-serwent teglam. Ulac afaris s lqedd: tidmi-inek d tamaynut, am kečč.",
+      cta: "Wali amezruy-nneɣ",
+    },
+    social: {
+      title: "Ddu ɣer tejmaɛt",
+      subtitle: "Timaynutin, ayen yellan deg lxidma d weṣṣiyen n uḥḍu",
+    },
+    cta: {
+      title: "Tamenuɣt-ik tettṛaǧu-k",
+      subtitle: "Ini-yaɣ-d kan ayen i twalaḍ",
+      button: "Ɛawed s WhatsApp",
+    },
+  },
 }

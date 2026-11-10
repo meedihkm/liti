@@ -102,7 +102,7 @@ export default function RootLayout({
         {/* Applique thème + langue mémorisés AVANT la première peinture (anti-flash) */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('rk-theme');if(t==='light'){document.documentElement.classList.remove('dark')}var l=localStorage.getItem('rk-lang');if(l==='ar'||l==='fr'){document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr'}}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem('rk-theme');if(t==='light'){document.documentElement.classList.remove('dark')}var l=localStorage.getItem('rk-lang');if(l==='ar'||l==='fr'||l==='kab'){document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr'}}catch(e){}})()`,
           }}
         />
       </head>

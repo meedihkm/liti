@@ -15,7 +15,7 @@ export function PriceCounter({
   className,
 }: {
   amount: number
-  lang: "fr" | "ar"
+  lang: "fr" | "ar" | "kab"
   className?: string
 }) {
   const ref = useRef<HTMLSpanElement>(null)

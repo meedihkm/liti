@@ -30,8 +30,9 @@ export function computeOrderTotal(
 }
 
 /** Format monétaire : 12 500 DA / 12 500 دج */
-export function formatDA(amount: number, lang: "fr" | "ar" = "fr"): string {
-  const formatted = new Intl.NumberFormat(lang === "ar" ? "ar-DZ" : "fr-FR", {
+export function formatDA(amount: number, lang: "fr" | "ar" | "kab" = "fr"): string {
+  const locale = lang === "ar" ? "ar-DZ" : lang === "kab" ? "kab-DZ" : "fr-FR";
+  const formatted = new Intl.NumberFormat(locale, {
     useGrouping: true,
     maximumFractionDigits: 0,
   }).format(Math.round(amount))
