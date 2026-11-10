@@ -15,6 +15,7 @@ export const common = {
     },
     actions: {
       order: "Commander",
+      close: "Fermer",
       addToCart: "Ajouter au panier",
       added: "Ajouté au panier",
       whatsapp: "WhatsApp",
@@ -90,6 +91,7 @@ export const common = {
     },
     actions: {
       order: "اطلبي الآن",
+      close: "إغلاق",
       addToCart: "أضف إلى السلة",
       added: "تمت الإضافة إلى السلة",
       whatsapp: "واتساب",

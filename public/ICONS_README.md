@@ -1,4 +1,11 @@
-# Icônes PWA Nécessaires
+# Icônes PWA — ✅ générées
+
+> **Statut : icônes générées** le 2026-11-10 avec `scripts/generate-pwa-icons.ts`
+> (motif du `favicon.svg` : losanges concentriques dorés sur noir chaud).
+> Pour les régénérer après un changement de marque :
+> ```bash
+> bun scripts/generate-pwa-icons.ts
+> ```
 
 Pour que la PWA fonctionne correctement, vous devez créer les icônes suivantes à partir du `favicon.svg` :
 

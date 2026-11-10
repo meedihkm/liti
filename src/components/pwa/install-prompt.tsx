@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Download, Share, Plus, ArrowUpSquare } from "lucide-react";
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -16,57 +16,62 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+// Lectures client-only sans setState dans le corps d'un effet
+// (règle react-hooks/set-state-in-effect) : useSyncExternalStore
+// avec un snapshot serveur fixé à false — aucune erreur d'hydratation.
+const noopSubscribe = () => () => {};
+
+function detectStandalone(): boolean {
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (window.navigator as Navigator & { standalone?: boolean }).standalone === true ||
+    document.referrer.includes("android-app://")
+  );
+}
+
+function detectIOS(): boolean {
+  return /iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window);
+}
+
 export function InstallPrompt() {
   const { t, lang } = useI18n();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [isStandalone, setIsStandalone] = useState(false);
+  const isStandalone = useSyncExternalStore(noopSubscribe, detectStandalone, () => false);
+  const isIOS = useSyncExternalStore(noopSubscribe, detectIOS, () => false);
 
   useEffect(() => {
-    // Détecter si déjà installé (mode standalone)
-    const standalone =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as Navigator & { standalone?: boolean }).standalone === true ||
-      document.referrer.includes("android-app://");
+    // Ne pas afficher si déjà installé ou déjà refusé
+    if (isStandalone) return;
 
-    setIsStandalone(standalone);
-
-    // Détecter iOS
-    const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window);
-    setIsIOS(ios);
-
-    // Ne pas afficher si déjà installé
-    if (standalone) return;
-
-    // Vérifier si déjà refusé
     const dismissed = localStorage.getItem("rk-install-dismissed");
     if (dismissed) return;
 
-    // Vérifier si première visite
+    // Première visite : afficher après 3 secondes
     const visited = localStorage.getItem("rk-visited");
     if (!visited) {
       localStorage.setItem("rk-visited", "true");
-      // Afficher après 3 secondes sur la première visite
       const timer = setTimeout(() => setShowPrompt(true), 3000);
       return () => clearTimeout(timer);
     }
 
-    // Android : capturer beforeinstallprompt
+    // Visites suivantes (Android) : capturer beforeinstallprompt,
+    // afficher 5 s après l'événement natif
+    let promptTimer: ReturnType<typeof setTimeout> | undefined;
+
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      // Afficher après 5 secondes sur les visites suivantes
-      const timer = setTimeout(() => setShowPrompt(true), 5000);
-      return () => clearTimeout(timer);
+      promptTimer = setTimeout(() => setShowPrompt(true), 5000);
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+      if (promptTimer) clearTimeout(promptTimer);
     };
-  }, []);
+  }, [isStandalone]);
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
