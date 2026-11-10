@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, Cairo } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { HashRouteMigrator } from "@/components/routing/hash-route-migrator";
+import { SWRegister } from "@/components/pwa/sw-register";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
 
 // Typographies : display moderne large + sans-serif lisible + arabe
 const display = Space_Grotesk({
@@ -106,6 +109,9 @@ export default function RootLayout({
       <body
         className={`${display.variable} ${body.variable} ${arabic.variable} font-sans antialiased bg-background text-foreground`}
       >
+        <HashRouteMigrator />
+        <SWRegister />
+        <InstallPrompt />
         {children}
         <Toaster position="top-center" richColors closeButton />
       </body>
