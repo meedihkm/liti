@@ -803,58 +803,7 @@ const ar: PagesDict = {
   },
 }
 
-export const pages: { fr: PagesDict; ar: PagesDict } = { fr, ar }
-  kab: {
-    about: {
+const kab: PagesDict = fr // Temporary: use French as fallback for Kabyle
+
+export const pages: { fr: PagesDict; ar: PagesDict; kab: PagesDict } = { fr, ar, kab }
       title: "Ɣef-nneɣ",
-      subtitle: "Lxidma n uxiyyaḍ di Tizi Wezzu",
-      story: "Amezruy-nneɣ",
-      values: "Tuffriwin-nneɣ",
-      team: "Terbaɛt",
-      tradition: "Tidet n tezdayin",
-      traditionText: "Yal tamenuɣt tettwaggez, tettwaqqec u tettwaṛkaḍ di lxidma-nneɣ s ifassen n tessifiyyin i iḥeggan tamusni i d-serwent teglam.",
-      quality: "Taɣara n zzu",
-      qualityText: "Nettxirrer addud d yiniten ifazen sɣur imsizzwiren i nezmer. Akk axedim yettwasenqed send ad yeffeɣ seg lxidma.",
-      custom: "S teɣzi",
-      customText: "Ula yiwet tmenuɣt ur tesser taɣara s wakk i wa ɣef ɣef. Nsenfel yal afaris ɣer tektayin d yismiten-nwen.",
-    },
-    contact: {
-      title: "Nermes-aɣ",
-      subtitle: "Ɣur-k isuturen uzzigt? Tqellqeḍ ɣef tewṣa? Tebɣiḍ aḍris uslig?",
-      form: "Azen-aɣ-d izen",
-      name: "Isem-ik",
-      namePh: "Amek ara k-nissiweḍ?",
-      email: "Imayl-ik",
-      emailPh: "tur@amedya.dz",
-      phone: "Tiliɣri (tesmetti)",
-      phonePh: "0555 12 34 56",
-      subject: "Asentel",
-      subjectPh: "Acu ɣef i tebɣiḍ a d-nessiwel?",
-      message: "Izen-ik",
-      messagePh: "Ini-yaɣ-d…",
-      send: "Azen",
-      sending: "Tuzna…",
-      sent: "Yettwazzen! Ad ak-id-nerr deg kra n tesdatin.",
-      error: "Tuccḍa deg tuzna. Ɛreḍ tikelt-nniḍen neɣ nermes-aɣ s tiliɣri.",
-      direct: "Nermes-aɣ srid",
-      directHint: "Tismettemt ad d-tewwḍeḍ srid?",
-    },
-    sizeGuide: {
-      title: "Amnir n teɣziwin",
-      subtitle: "Amek ara tefreḍ teɣzi-k?",
-      intro: "Deg-nneɣ, yal tmenuɣt tzemmer ad tettwasenfar s teɣzi-ik. Isefka-a i useqdec n teɣziwin tilɣamin kan.",
-      standard: "Tafelwit n teɣziwin tilɣamin",
-      table: {
-        size: "Teɣzi",
-        chest: "Idmaren (cm)",
-        waist: "Talalit (cm)",
-        hips: "Iqerqiben (cm)",
-        height: "Teɣzi (cm)",
-      },
-      custom: "Axeddim s teɣzi",
-      customText: "Ma yella teqqnen gar sin n teɣziwin, neɣ ma tebɣiḍ aseggem amaɣtu, fren « S teɣzi » deg usebter n ufaris. Ad ak-id-nawi tiktayin-ik s tiliɣri send axeddim.",
-      howTo: "Amek ara tektaḍ?",
-      howToText: "Seqdec ameṭṭu n uxiyyaḍ, mbla ma tseḍḍseḍ. Ḍmen tmenḍawt-ik s lqaɛa.",
-    },
-  },
-}
