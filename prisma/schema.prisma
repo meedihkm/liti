@@ -286,3 +286,82 @@ model ContentBlock {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// ── Système de devis (sur-mesure) ─────────────────────────────
+// Les clients peuvent demander un devis pour une robe sur-mesure.
+// Système d'échanges de messages et photos entre client et admin.
+
+model Quote {
+  id                String         @id @default(cuid())
+  number            String         @unique // ex. DEV-2026-0001
+  status            String         @default("pending") 
+  // pending | in_discussion | quoted | accepted | rejected | converted_to_order
+  customerName      String
+  customerPhone     String
+  customerEmail     String         @default("")
+  wilayaCode        Int
+  wilayaName        String
+  commune           String         @default("")
+  
+  // Détails de la demande
+  productType       String         @default("") // type de robe souhaité
+  description       String         @default("") // description libre du client
+  referenceImages   String         @default("[]") // JSON array d'URLs d'images de référence
+  fabricPreference  String         @default("")
+  colorPreference   String         @default("")
+  measurementsJson  String         @default("{}")
+  budget            Int            @default(0) // budget indicatif
+  deadline          String         @default("") // date souhaitée
+  
+  // Réponse admin
+  estimatedPrice    Int            @default(0)
+  estimatedDays     Int            @default(0)
+  adminNotes        String         @default("")
+  
+  orderId           String         @default("") // si converti en commande
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  
+  messages          QuoteMessage[]
+  history           QuoteStatusHistory[]
+}
+
+model QuoteMessage {
+  id          String   @id @default(cuid())
+  quoteId     String
+  quote       Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  sender      String   // "customer" | "admin"
+  senderName  String   @default("")
+  message     String
+  attachments String   @default("[]") // JSON array d'URLs (photos, docs)
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model QuoteStatusHistory {
+  id        String   @id @default(cuid())
+  quoteId   String
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  status    String
+  note      String   @default("")
+  actor     String   @default("system") // "system" | "customer" | nom de l'admin
+  createdAt DateTime @default(now())
+}
+
+// ── Profil client (optionnel) ─────────────────────────────────
+// Permet de sauvegarder les infos et mesures pour les clients réguliers
+
+model CustomerProfile {
+  id               String   @id @default(cuid())
+  phone            String   @unique // identifiant principal
+  name             String
+  email            String   @default("")
+  wilayaCode       Int      @default(0)
+  wilayaName       String   @default("")
+  commune          String   @default("")
+  address          String   @default("")
+  measurementsJson String   @default("{}")
+  notes            String   @default("") // préférences, remarques
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
