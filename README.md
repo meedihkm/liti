@@ -11,15 +11,16 @@ Site e-commerce complet de **vente et commande sur mesure de robes kabyles** (Al
 ## Sommaire
 
 1. [Fonctionnalités](#fonctionnalités)
-2. [Stack technique & décisions](#stack-technique--décisions)
-3. [Installation locale](#installation-locale)
-4. [Comptes de démonstration](#comptes-de-démonstration)
-5. [Commandes utiles](#commandes-utiles)
-6. [Déploiement Docker / Coolify](#déploiement-docker--coolify)
-7. [Premier compte admin en production](#premier-compte-admin-en-production)
-8. [Sauvegardes](#sauvegardes)
-9. [Structure du code](#structure-du-code)
-10. [Sécurité](#sécurité)
+2. [PWA Installable](#pwa-installable)
+3. [Stack technique & décisions](#stack-technique--décisions)
+4. [Installation locale](#installation-locale)
+5. [Comptes de démonstration](#comptes-de-démonstration)
+6. [Commandes utiles](#commandes-utiles)
+7. [Déploiement Docker / Coolify](#déploiement-docker--coolify)
+8. [Premier compte admin en production](#premier-compte-admin-en-production)
+9. [Sauvegardes](#sauvegardes)
+10. [Structure du code](#structure-du-code)
+11. [Sécurité](#sécurité)
 
 ---
 
@@ -46,6 +47,64 @@ Site e-commerce complet de **vente et commande sur mesure de robes kabyles** (Al
 - **Paramètres** : identité, coordonnées, réseaux sociaux, textes d'accueil, bannière promo, email admin, **changement de mot de passe**
 - **Rôles** : `admin` (tout) et `staff` (commandes + messages)
 - **Notifications** : email à l'admin à chaque commande (SMTP configurable ; sans SMTP, journalisation en base visible dans l'admin)
+
+---
+
+## PWA Installable
+
+Le site est une **Progressive Web App** complète, installable sur Android et iOS :
+
+### Fonctionnalités PWA
+- ✅ **Installation native** : Android (prompt automatique), iOS Safari (guide illustré)
+- ✅ **Prompt à la première visite** : invitation à installer l'app dès la première utilisation
+- ✅ **Mode hors-ligne** : cache intelligent du shell et des assets
+- ✅ **Mises à jour transparentes** : bandeau de notification quand une nouvelle version est disponible
+- ✅ **Icônes adaptatives** : Android maskable + iOS apple-touch-icon
+- ✅ **Raccourcis** : Boutique, Suivi de commande
+
+### Stratégies de cache (Service Worker)
+- **Shell** : network-first avec fallback cache
+- **Assets** (images, fonts) : cache-first
+- **API publique** (`/api/meta`, `/api/products`) : stale-while-revalidate
+- **Jamais caché** : `/api/admin/*`, `/api/orders`, `/api/track`, toutes les mutations, réponses authentifiées
+
+### Installation
+**Android Chrome :**
+1. Le prompt natif s'affiche automatiquement après 3 secondes (première visite) ou 5 secondes (visites suivantes)
+2. Cliquer sur "Installer maintenant"
+3. L'app apparaît sur l'écran d'accueil
+
+**iOS Safari :**
+1. Un guide illustré s'affiche automatiquement
+2. Appuyer sur le bouton Partager (⎙) en bas
+3. Choisir "Sur l'écran d'accueil"
+4. Confirmer l'installation
+
+### Mode Standalone
+En mode installé :
+- Navigation basse type app native (visible uniquement en standalone)
+- Safe areas iOS respectées (`viewport-fit=cover`, `env(safe-area-inset-*)`)
+- Pas de zoom involontaire sur les champs (font-size >= 16px)
+- Gestion du retour système via le routage par hash
+
+### Tests PWA
+```bash
+# Lighthouse PWA audit
+npm install -g @lhci/cli
+lhci autorun --config=lighthouserc.json
+
+# Ou via Chrome DevTools > Lighthouse > Progressive Web App
+```
+
+### Génération des icônes PWA
+Les icônes PNG doivent être générées à partir de `public/favicon.svg`.  
+Voir `public/ICONS_README.md` pour les instructions complètes (ImageMagick, Inkscape, ou services en ligne).
+
+Icônes requises :
+- `icon-192.png` (192×192)
+- `icon-512.png` (512×512)
+- `icon-512-maskable.png` (512×512, safe zone 80%)
+- `apple-touch-icon.png` (180×180)
 
 ---
 
