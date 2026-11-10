@@ -237,3 +237,52 @@ model MailLog {
   error     String   @default("")
   createdAt DateTime @default(now())
 }
+
+// ── Galerie/Vitrine (Lookbook) ────────────────────────────────
+// Les visuels de vitrine : lookbooks thématiques, collections, 
+// photos d'inspiration, mood boards, etc.
+
+model Gallery {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  titleAr       String
+  description   String        @default("")
+  descriptionAr String        @default("")
+  coverImage    String        @default("") // image principale
+  type          String        @default("lookbook") // lookbook | collection | inspiration
+  visible       Boolean       @default(true)
+  order         Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  images        GalleryImage[]
+}
+
+model GalleryImage {
+  id          String   @id @default(cuid())
+  galleryId   String
+  gallery     Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  url         String
+  alt         String   @default("")
+  caption     String   @default("")
+  captionAr   String   @default("")
+  productId   String   @default("") // lien vers produit si applicable
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+// ContentBlock : sections éditoriales dynamiques pour la page galerie
+// (bannières, texte marketing, call-to-action, etc.)
+model ContentBlock {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String   @default("")
+  titleAr     String   @default("")
+  content     String   @default("") // HTML ou markdown
+  contentAr   String   @default("")
+  type        String   @default("hero") // hero | banner | text | cta
+  visible     Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
