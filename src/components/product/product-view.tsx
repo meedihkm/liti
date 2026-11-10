@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock, ChevronRight } from "lucide-react";
+import { ArrowLeft, Clock, ChevronRight, Sparkles } from "lucide-react";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { useRouter } from "@/lib/router";
 import { api } from "@/lib/api-client";
 import { formatDA } from "@/lib/pricing";
 import { ProductGallery } from "./product-gallery";
 import { Configurator } from "./configurator";
+import { ConfiguratorWizard } from "./configurator-wizard";
 import { ProductCard } from "@/components/catalog/product-card";
 import { BerberDivider } from "@/components/layout/berber-divider";
 import { OCCASIONS } from "@/lib/constants";
@@ -27,6 +28,7 @@ export function ProductView({ id }: { id: string }) {
   const [error, setError] = useState(false)
   const [related, setRelated] = useState<ProductDTO[]>([])
   const [tintHex, setTintHex] = useState<string | undefined>(undefined)
+  const [showWizard, setShowWizard] = useState(false)
 
   useEffect(() => {
     api<ProductDTO>(`/api/products/${id}`)
@@ -174,10 +176,29 @@ export function ProductView({ id }: { id: string }) {
             <BerberDivider variant="line" className="opacity-40" />
           </div>
 
-          {/* Configurateur (transmet la teinte couleur à la galerie) */}
-          <div className="mt-6">
+          {/* Configurateur classique + bouton wizard */}
+          <div className="mt-6 space-y-4">
+            {/* Bouton pour ouvrir le wizard futuriste */}
+            <button
+              onClick={() => setShowWizard(true)}
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-gold to-gold-strong py-4 font-display text-lg font-semibold text-primary-foreground shadow-lg shadow-gold/30 transition-transform hover:-translate-y-1 active:scale-98"
+            >
+              <Sparkles className="h-5 w-5" />
+              {t("product.quickConfig")}
+            </button>
+            
+            {/* Configurateur classique */}
             <Configurator product={product} onColorHexChange={setTintHex} />
           </div>
+
+          {/* Wizard plein écran */}
+          {showWizard && (
+            <ConfiguratorWizard
+              product={product}
+              onClose={() => setShowWizard(false)}
+              onColorHexChange={setTintHex}
+            />
+          )}
         </div>
       </div>
 

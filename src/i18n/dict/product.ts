@@ -4,12 +4,43 @@ export const product = {
     leadTime: "Confection artisanale en ~{days} jours",
     from: "à partir de",
     description: "Description",
+    quickConfig: "Configuration rapide ✨",
+    add: "Ajouter au panier",
+    added: "✓ Ajouté au panier",
     sections: {
       fabric: "Tissu",
       color: "Couleur",
       size: "Taille",
       embroidery: "Broderie & motifs",
       finish: "Finitions",
+    },
+    fabric: {
+      title: "Choisissez votre tissu",
+      hint: "Le tissu définit l'aspect et le tombé de votre robe",
+    },
+    color: {
+      title: "Choisissez la couleur",
+      hint: "La teinte sera appliquée au visuel pour prévisualisation",
+    },
+    size: {
+      title: "Votre taille",
+      hint: "Choisissez une taille standard ou entrez vos mesures",
+      standard: "Taille standard",
+      custom: "Sur mesure",
+      customFee: "Sur-mesure",
+    },
+    embroidery: {
+      title: "Broderie & motifs",
+      hint: "Ajoutez de la broderie artisanale (optionnel)",
+      none: "Aucune broderie disponible pour ce produit",
+    },
+    details: {
+      title: "Finitions",
+      hint: "Quantité, date de l'événement et notes spéciales",
+    },
+    summary: {
+      title: "Récapitulatif",
+      hint: "Vérifiez votre configuration avant d'ajouter au panier",
     },
     fabrics: {
       title: "Choisissez votre tissu",
@@ -77,12 +108,43 @@ export const product = {
     leadTime: "خياطة تقليدية في ~{days} يومًا",
     from: "ابتداءً من",
     description: "الوصف",
+    quickConfig: "تكوين سريع ✨",
+    add: "أضف إلى السلة",
+    added: "✓ أُضيف إلى السلة",
     sections: {
       fabric: "القماش",
       color: "اللون",
       size: "المقاس",
       embroidery: "التطريز والنقوش",
       finish: "اللمسات الأخيرة",
+    },
+    fabric: {
+      title: "اختاري قماشك",
+      hint: "يحدد القماش مظهر وسقوط فستانك",
+    },
+    color: {
+      title: "اختاري اللون",
+      hint: "سيتم تطبيق اللون على الصورة للمعاينة",
+    },
+    size: {
+      title: "مقاسك",
+      hint: "اختاري مقاسًا عاديًا أو أدخلي قياساتك",
+      standard: "مقاس عادي",
+      custom: "حسب القياس",
+      customFee: "حسب القياس",
+    },
+    embroidery: {
+      title: "التطريز والنقوش",
+      hint: "أضيفي تطريزًا يدويًا (اختياري)",
+      none: "لا يتوفر تطريز لهذا المنتج",
+    },
+    details: {
+      title: "اللمسات الأخيرة",
+      hint: "الكمية وتاريخ المناسبة والملاحظات الخاصة",
+    },
+    summary: {
+      title: "الملخص",
+      hint: "تحققي من تكوينك قبل الإضافة إلى السلة",
     },
     fabrics: {
       title: "اختاري قماشك",
