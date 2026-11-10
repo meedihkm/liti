@@ -403,3 +403,69 @@ model PushSubscription {
   userAgent    String   @default("")
   createdAt    DateTime @default(now())
 }
+
+// ── Phase 4: Enrichissements back-office ──────────────────────
+
+// Codes promo
+model PromoCode {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  type        String   // percentage | fixed
+  value       Int      // pourcentage ou montant fixe
+  minAmount   Int      @default(0) // montant minimum de commande
+  maxUses     Int      @default(0) // 0 = illimité
+  usedCount   Int      @default(0)
+  validFrom   DateTime @default(now())
+  validUntil  DateTime
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+// Blog posts
+model BlogPost {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  titleAr       String
+  excerpt       String   @default("")
+  excerptAr     String   @default("")
+  content       String   @default("") // HTML or Markdown
+  contentAr     String   @default("")
+  coverImage    String   @default("")
+  author        String   @default("Taqendurt")
+  tags          String   @default("[]") // JSON array
+  published     Boolean  @default(false)
+  publishedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Rendez-vous en atelier
+model Appointment {
+  id            String   @id @default(cuid())
+  customerName  String
+  customerPhone String
+  customerEmail String   @default("")
+  date          DateTime
+  timeSlot      String   // 10:00-11:00, 11:00-12:00, etc.
+  type          String   @default("fitting") // fitting | consultation | pickup
+  status        String   @default("pending") // pending | confirmed | completed | cancelled
+  notes         String   @default("")
+  orderId       String   @default("") // optionnel, lié à une commande
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Avis clients
+model Review {
+  id            String   @id @default(cuid())
+  orderId       String   @default("")
+  customerName  String
+  rating        Int      // 1-5 étoiles
+  comment       String   @default("")
+  photos        String   @default("[]") // JSON array d'URLs
+  published     Boolean  @default(false)
+  publishedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

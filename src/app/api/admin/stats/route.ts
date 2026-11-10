@@ -1,53 +1,105 @@
-// GET /api/admin/stats — tableau de bord (staff OK)
-import { type NextResponse } from "next/server"
-import { db } from "@/lib/db"
-import { jsonOk, requireAdmin } from "@/lib/api"
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';
+import { verifySession } from '@/lib/auth';
 
-export const dynamic = "force-dynamic"
+// GET /api/admin/stats - Dashboard statistics
+export async function GET(req: NextRequest) {
+  try {
+    await verifySession(req);
 
-const REVENUE_STATUSES = ["validated", "crafting", "ready", "shipped", "delivered"]
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-export async function GET(): Promise<NextResponse> {
-  const auth = await requireAdmin()
-  if ("response" in auth) return auth.response
+    // Orders stats
+    const totalOrders = await prisma.order.count();
+    const ordersThisMonth = await prisma.order.count({
+      where: { createdAt: { gte: thirtyDaysAgo } },
+    });
+    
+    const ordersByStatus = await prisma.order.groupBy({
+      by: ['status'],
+      _count: true,
+    });
 
-  const now = new Date()
-  const since48h = new Date(now.getTime() - 48 * 3600 * 1000)
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+    // Revenue stats
+    const totalRevenue = await prisma.order.aggregate({
+      _sum: { total: true },
+      where: { status: { in: ['delivered', 'shipped'] } },
+    });
 
-  const [newOrders, pendingOrders, totalOrders, unreadMessages, monthAgg, topAgg, recentOrders] =
-    await Promise.all([
-      db.order.count({ where: { createdAt: { gte: since48h } } }),
-      db.order.count({ where: { status: "pending" } }),
-      db.order.count(),
-      db.contactMessage.count({ where: { status: "new" } }),
-      db.order.aggregate({
-        where: { createdAt: { gte: monthStart }, status: { in: REVENUE_STATUSES } },
-        _sum: { total: true },
-      }),
-      db.orderItem.groupBy({
-        by: ["productName"],
-        _sum: { quantity: true },
-        orderBy: { _sum: { quantity: "desc" } },
-        take: 5,
-      }),
-      db.order.findMany({ orderBy: { createdAt: "desc" }, take: 8 }),
-    ])
+    const revenueThisMonth = await prisma.order.aggregate({
+      _sum: { total: true },
+      where: {
+        status: { in: ['delivered', 'shipped'] },
+        createdAt: { gte: thirtyDaysAgo },
+      },
+    });
 
-  return jsonOk({
-    newOrders,
-    pendingOrders,
-    monthRevenue: monthAgg._sum.total ?? 0,
-    totalOrders,
-    unreadMessages,
-    topProducts: topAgg.map((t) => ({ name: t.productName, count: t._sum.quantity ?? 0 })),
-    recentOrders: recentOrders.map((o) => ({
-      id: o.id,
-      number: o.number,
-      fullName: o.fullName,
-      total: o.total,
-      status: o.status,
-      createdAt: o.createdAt.toISOString(),
-    })),
-  })
+    // Products stats
+    const totalProducts = await prisma.product.count();
+    const activeProducts = await prisma.product.count({
+      where: { visible: true },
+    });
+
+    // Quotes stats
+    const totalQuotes = await prisma.quote.count();
+    const pendingQuotes = await prisma.quote.count({
+      where: { status: 'pending' },
+    });
+
+    // Recent activity
+    const recentOrders = await prisma.order.findMany({
+      take: 5,
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        number: true,
+        status: true,
+        total: true,
+        fullName: true,
+        createdAt: true,
+      },
+    });
+
+    const recentQuotes = await prisma.quote.findMany({
+      take: 5,
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        number: true,
+        status: true,
+        customerName: true,
+        createdAt: true,
+      },
+    });
+
+    return NextResponse.json({
+      orders: {
+        total: totalOrders,
+        thisMonth: ordersThisMonth,
+        byStatus: ordersByStatus,
+        recent: recentOrders,
+      },
+      revenue: {
+        total: totalRevenue._sum.total || 0,
+        thisMonth: revenueThisMonth._sum.total || 0,
+      },
+      products: {
+        total: totalProducts,
+        active: activeProducts,
+      },
+      quotes: {
+        total: totalQuotes,
+        pending: pendingQuotes,
+        recent: recentQuotes,
+      },
+    });
+  } catch (error: unknown) {
+    const err = error as Error;
+    if (err.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+    }
+    console.error('[GET /api/admin/stats] Error:', error);
+    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+  }
 }
