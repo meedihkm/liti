@@ -164,6 +164,8 @@ model Order {
   updatedAt     DateTime             @updatedAt
   items         OrderItem[]
   history       OrderStatusHistory[]
+  tracking      TrackingToken?
+  advancements  OrderAdvancement[]
 }
 
 model OrderItem {
@@ -364,4 +366,40 @@ model CustomerProfile {
   notes            String   @default("") // préférences, remarques
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+// ── Suivi de commande avec photos d'avancement ────────────────
+
+model TrackingToken {
+  id        String   @id @default(cuid())
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  token     String   @unique // token public pour tracking sans compte
+  createdAt DateTime @default(now())
+}
+
+model OrderAdvancement {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  stage       String   // fabric_cutting | embroidery | assembly | finishing | quality_check
+  title       String
+  titleAr     String
+  description String   @default("")
+  photos      String   @default("[]") // JSON array d'URLs
+  progress    Int      @default(0) // 0-100%
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Notifications push (PWA)
+model PushSubscription {
+  id           String   @id @default(cuid())
+  userId       String   @default("") // optionnel, pour clients avec compte
+  orderId      String   @default("") // optionnel, pour suivre une commande
+  endpoint     String   @unique
+  p256dh       String
+  auth         String
+  userAgent    String   @default("")
+  createdAt    DateTime @default(now())
 }
