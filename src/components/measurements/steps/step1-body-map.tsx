@@ -16,43 +16,49 @@ interface Step1BodyMapProps {
   measurements: Partial<MeasurementValues>;
   onMeasureZone: (zone: MeasurementKey) => void;
   onNext: () => void;
-  lang?: "fr" | "ar";
+  lang?: "fr" | "ar" | "kab";
 }
 
-const INSTRUCTIONS: Record<MeasurementKey, { fr: string; ar: string }> = {
+const INSTRUCTIONS: Record<MeasurementKey, { fr: string; ar: string; kab: string }> = {
   chest: {
     fr: "Le mètre passe sous les bras, au point le plus fort de la poitrine",
     ar: "يمر الشريط تحت الإبطين، عند أوسع نقطة من الصدر",
+    kab: "Ameṭṭu yettuɛeddi ddaw n yifassen, deg uxxam ameqqran n yidmaren",
   },
   waist: {
     fr: "Au creux naturel de la taille, juste au-dessus du nombril",
     ar: "عند الخصر الطبيعي، فوق السرّة مباشرة",
+    kab: "Deg tlalit tagejdant, nnig n tbuṭṭ",
   },
   hips: {
     fr: "À l'endroit le plus large des hanches, pieds joints",
     ar: "عند أوسع نقطة من الوركين، والقدمان مضمومتان",
+    kab: "Deg wadeg ameqqran n yiqerqiben, iḍarren idduklen",
   },
   shoulders: {
     fr: "Dans le dos, d'un bout à l'autre des épaules",
     ar: "من الخلف، من طرف إلى طرف بين عظمتي الكتف",
+    kab: "Deg uzaglu, seg yiwet n tawrirt ɣer tayeḍ",
   },
   sleeve: {
     fr: "Du sommet de l'épaule jusqu'au poignet, bras légèrement plié",
     ar: "من قمة الكتف حتى المعصم، والذراع مثنية قليلاً",
+    kab: "Seg ufella n twrirt ar uɣil, afus yeddukkel cwiṭ",
   },
   length: {
     fr: "Du haut de l'épaule jusqu'à l'ourlet souhaité",
     ar: "من أعلى الكتف حتى الذيل المطلوب",
+    kab: "Seg ufella n twrirt ar teɣzi i tebɣiḍ",
   },
 };
 
-const ZONE_LABELS: Record<MeasurementKey, { fr: string; ar: string }> = {
-  chest: { fr: "Tour de poitrine", ar: "محيط الصدر" },
-  waist: { fr: "Tour de taille", ar: "محيط الخصر" },
-  hips: { fr: "Tour de hanches", ar: "محيط الوركين" },
-  shoulders: { fr: "Largeur d'épaules", ar: "عرض الكتفين" },
-  sleeve: { fr: "Longueur de manche", ar: "طول الكم" },
-  length: { fr: "Longueur totale", ar: "الطول الكلي" },
+const ZONE_LABELS: Record<MeasurementKey, { fr: string; ar: string; kab: string }> = {
+  chest: { fr: "Tour de poitrine", ar: "محيط الصدر", kab: "Idmaren" },
+  waist: { fr: "Tour de taille", ar: "محيط الخصر", kab: "Talalit" },
+  hips: { fr: "Tour de hanches", ar: "محيط الوركين", kab: "Iqerqiben" },
+  shoulders: { fr: "Largeur d'épaules", ar: "عرض الكتفين", kab: "Tehri n twririn" },
+  sleeve: { fr: "Longueur de manche", ar: "طول الكم", kab: "Teɣzi n ufus" },
+  length: { fr: "Longueur totale", ar: "الطول الكلي", kab: "Teɣzi meṛṛa" },
 };
 
 export function Step1BodyMap({ measurements, onMeasureZone, onNext, lang = "fr" }: Step1BodyMapProps) {
@@ -80,10 +86,10 @@ export function Step1BodyMap({ measurements, onMeasureZone, onNext, lang = "fr" 
       {/* Titre */}
       <div className="text-center">
         <h2 className="text-2xl font-display font-semibold">
-          {lang === "ar" ? "المناطق المطلوب قياسها" : "Zones à mesurer"}
+          {lang === "ar" ? "المناطق المطلوب قياسها" : lang === "kab" ? "Tiɣzirin ara yettumsinen" : "Zones à mesurer"}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          {lang === "ar" ? "اضغطي على منطقة للبدء" : "Tapez sur une zone pour commencer"}
+          {lang === "ar" ? "اضغطي على منطقة للبدء" : lang === "kab" ? "Sit ɣef teɣzirt i tebɣiḍ ad tebduḍ" : "Tapez sur une zone pour commencer"}
         </p>
       </div>
 
@@ -130,7 +136,7 @@ export function Step1BodyMap({ measurements, onMeasureZone, onNext, lang = "fr" 
               onClick={handleMeasure}
               className="btn-primary w-full"
             >
-              {lang === "ar" ? "قياس" : "Mesurer"}
+              {lang === "ar" ? "قياس" : lang === "kab" ? "Tkil" : "Mesurer"}
             </button>
           </motion.div>
         )}
@@ -177,7 +183,7 @@ export function Step1BodyMap({ measurements, onMeasureZone, onNext, lang = "fr" 
           onClick={onNext}
           className="btn-primary w-full max-w-sm mt-4"
         >
-          {lang === "ar" ? "التالي" : "Suivant"}
+          {lang === "ar" ? "التالي" : lang === "kab" ? "Ɣer zdat" : "Suivant"}
         </motion.button>
       )}
     </div>
