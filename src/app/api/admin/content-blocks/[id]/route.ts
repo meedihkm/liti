@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 type Params = {
@@ -13,7 +13,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     const { id } = await params;
     const body = await req.json();
 
-    const block = await prisma.contentBlock.findUnique({ where: { id } });
+    const block = await db.contentBlock.findUnique({ where: { id } });
     if (!block) {
       return NextResponse.json(
         { error: 'Bloc introuvable' },
@@ -23,7 +23,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
     // If slug is being changed, check uniqueness
     if (body.slug && body.slug !== block.slug) {
-      const existing = await prisma.contentBlock.findUnique({
+      const existing = await db.contentBlock.findUnique({
         where: { slug: body.slug },
       });
       if (existing) {
@@ -34,7 +34,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       }
     }
 
-    const updated = await prisma.contentBlock.update({
+    const updated = await db.contentBlock.update({
       where: { id },
       data: {
         ...(body.slug && { slug: body.slug }),
@@ -68,7 +68,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     await verifySession(req);
     const { id } = await params;
 
-    const block = await prisma.contentBlock.findUnique({ where: { id } });
+    const block = await db.contentBlock.findUnique({ where: { id } });
     if (!block) {
       return NextResponse.json(
         { error: 'Bloc introuvable' },
@@ -76,7 +76,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
       );
     }
 
-    await prisma.contentBlock.delete({ where: { id } });
+    await db.contentBlock.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {

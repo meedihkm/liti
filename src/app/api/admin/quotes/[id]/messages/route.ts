@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 type Params = {
@@ -21,12 +21,12 @@ export async function POST(req: NextRequest, { params }: Params) {
       );
     }
 
-    const quote = await prisma.quote.findUnique({ where: { id } });
+    const quote = await db.quote.findUnique({ where: { id } });
     if (!quote) {
       return NextResponse.json({ error: 'Devis introuvable' }, { status: 404 });
     }
 
-    const quoteMessage = await prisma.quoteMessage.create({
+    const quoteMessage = await db.quoteMessage.create({
       data: {
         quoteId: id,
         sender: 'admin',
@@ -38,12 +38,12 @@ export async function POST(req: NextRequest, { params }: Params) {
 
     // Update quote status to in_discussion if it was pending
     if (quote.status === 'pending') {
-      await prisma.quote.update({
+      await db.quote.update({
         where: { id },
         data: { status: 'in_discussion' },
       });
 
-      await prisma.quoteStatusHistory.create({
+      await db.quoteStatusHistory.create({
         data: {
           quoteId: id,
           status: 'in_discussion',

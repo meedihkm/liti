@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 type Params = {
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest, { params }: Params) {
       );
     }
 
-    const order = await prisma.order.findUnique({ where: { id: orderId } });
+    const order = await db.order.findUnique({ where: { id: orderId } });
     if (!order) {
       return NextResponse.json(
         { error: 'Commande introuvable' },
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, { params }: Params) {
       );
     }
 
-    const advancement = await prisma.orderAdvancement.create({
+    const advancement = await db.orderAdvancement.create({
       data: {
         orderId,
         stage,
@@ -44,12 +44,12 @@ export async function POST(req: NextRequest, { params }: Params) {
 
     // Update order status to crafting if not already
     if (order.status === 'validated') {
-      await prisma.order.update({
+      await db.order.update({
         where: { id: orderId },
         data: { status: 'crafting' },
       });
 
-      await prisma.orderStatusHistory.create({
+      await db.orderStatusHistory.create({
         data: {
           orderId,
           status: 'crafting',

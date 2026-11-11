@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 type Params = {
@@ -13,7 +13,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     const { id } = await params;
     const body = await req.json();
 
-    const image = await prisma.galleryImage.findUnique({ where: { id } });
+    const image = await db.galleryImage.findUnique({ where: { id } });
     if (!image) {
       return NextResponse.json(
         { error: 'Image introuvable' },
@@ -21,7 +21,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       );
     }
 
-    const updated = await prisma.galleryImage.update({
+    const updated = await db.galleryImage.update({
       where: { id },
       data: {
         ...(body.url && { url: body.url }),
@@ -53,7 +53,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     await verifySession(req);
     const { id } = await params;
 
-    const image = await prisma.galleryImage.findUnique({ where: { id } });
+    const image = await db.galleryImage.findUnique({ where: { id } });
     if (!image) {
       return NextResponse.json(
         { error: 'Image introuvable' },
@@ -61,7 +61,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
       );
     }
 
-    await prisma.galleryImage.delete({ where: { id } });
+    await db.galleryImage.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {

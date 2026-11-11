@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 type Params = {
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, { params }: Params) {
     await verifySession(req);
     const { id } = await params;
 
-    const gallery = await prisma.gallery.findUnique({
+    const gallery = await db.gallery.findUnique({
       where: { id },
       include: {
         images: {
@@ -49,7 +49,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     const { id } = await params;
     const body = await req.json();
 
-    const gallery = await prisma.gallery.findUnique({ where: { id } });
+    const gallery = await db.gallery.findUnique({ where: { id } });
     if (!gallery) {
       return NextResponse.json(
         { error: 'Galerie introuvable' },
@@ -59,7 +59,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
     // If slug is being changed, check uniqueness
     if (body.slug && body.slug !== gallery.slug) {
-      const existing = await prisma.gallery.findUnique({
+      const existing = await db.gallery.findUnique({
         where: { slug: body.slug },
       });
       if (existing) {
@@ -70,7 +70,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       }
     }
 
-    const updated = await prisma.gallery.update({
+    const updated = await db.gallery.update({
       where: { id },
       data: {
         ...(body.slug && { slug: body.slug }),
@@ -116,7 +116,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     await verifySession(req);
     const { id } = await params;
 
-    const gallery = await prisma.gallery.findUnique({ where: { id } });
+    const gallery = await db.gallery.findUnique({ where: { id } });
     if (!gallery) {
       return NextResponse.json(
         { error: 'Galerie introuvable' },
@@ -124,7 +124,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
       );
     }
 
-    await prisma.gallery.delete({ where: { id } });
+    await db.gallery.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {

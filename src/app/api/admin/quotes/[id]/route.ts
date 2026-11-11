@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 type Params = {
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, { params }: Params) {
     await verifySession(req);
     const { id } = await params;
 
-    const quote = await prisma.quote.findUnique({
+    const quote = await db.quote.findUnique({
       where: { id },
       include: {
         messages: {
@@ -49,12 +49,12 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     const { id } = await params;
     const body = await req.json();
 
-    const quote = await prisma.quote.findUnique({ where: { id } });
+    const quote = await db.quote.findUnique({ where: { id } });
     if (!quote) {
       return NextResponse.json({ error: 'Devis introuvable' }, { status: 404 });
     }
 
-    const updated = await prisma.quote.update({
+    const updated = await db.quote.update({
       where: { id },
       data: {
         ...(body.status && { status: body.status }),
@@ -72,7 +72,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
     // Add history entry if status changed
     if (body.status && body.status !== quote.status) {
-      await prisma.quoteStatusHistory.create({
+      await db.quoteStatusHistory.create({
         data: {
           quoteId: id,
           status: body.status,
@@ -102,12 +102,12 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     await verifySession(req);
     const { id } = await params;
 
-    const quote = await prisma.quote.findUnique({ where: { id } });
+    const quote = await db.quote.findUnique({ where: { id } });
     if (!quote) {
       return NextResponse.json({ error: 'Devis introuvable' }, { status: 404 });
     }
 
-    await prisma.quote.delete({ where: { id } });
+    await db.quote.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
