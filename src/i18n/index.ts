@@ -10,12 +10,13 @@ import { checkout } from "./dict/checkout"
 import { pages } from "./dict/pages"
 import { admin } from "./dict/admin"
 
-export type Lang = "fr" | "ar"
+export type Lang = "fr" | "ar" | "kab"
 export type Dir = "ltr" | "rtl"
 
 export const LANGS: { code: Lang; label: string; dir: Dir }[] = [
   { code: "fr", label: "Français", dir: "ltr" },
   { code: "ar", label: "العربية", dir: "rtl" },
+  { code: "kab", label: "Taqbaylit", dir: "ltr" },
 ]
 
 export function dirOf(lang: Lang): Dir {

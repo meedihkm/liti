@@ -158,4 +158,82 @@ export const measurementsAr = {
   },
 };
 
+export const measurementsKab = {
+  wizard: {
+    title: "Tukksa n tektayin",
+    progress: "{current} ɣef {total} tektayin",
+  },
+  step0: {
+    title: "Send ad tebduḍ",
+    forWho: {
+      title: "I wumi i tettekki tiktayin-a?",
+      self: "I yiman-iw",
+      daughter: "I yelli",
+      sister: "I weltma",
+      other: "I wayeḍ",
+      namePlaceholder: "Isem",
+    },
+    method: {
+      title: "Amek tebɣiḍ ad tetkiḍ?",
+      tape: "S umeṭṭu n tektayin",
+      tapeDesc: "Iwelleh, d ayen yufraren",
+      dress: "S teslant yellan",
+      dressDesc: "Sers teslant i yesɛan teɣzi-k s wufella",
+      estimation: "Asiɣzen n teɣzi/azarug",
+      estimationDesc: "Ɣef wazal-is, ad tesseɣtiḍ seld-agi",
+    },
+    fit: {
+      title: "Taɣzint i tebɣiḍ",
+      fitted: "Yeqqnen ɣer tmellayt",
+      comfortable: "Asersan",
+      loose: "Ifser",
+    },
+    units: {
+      cm: "Santimitr",
+      inches: "Puṣat",
+    },
+    next: "Bdu",
+  },
+  step1: {
+    title: "Tiɣzirin ara yettumsinen",
+    subtitle: "Sit ɣef teɣzirt i tebɣiḍ ad tebduḍ",
+    measure: "Tkil",
+    next: "Ɣer zdat",
+  },
+  step2: {
+    range: "Azal iwelhen: {min}–{max} sm",
+    keyboard: "Sekcem s unasiw",
+    keyboardTitle: "Sekcem azal",
+    keyboardPlaceholder: "Amedya: 92",
+    cancel: "Sefsex",
+    confirm: "Sentem",
+    previous: "Ɣer deffir",
+    next: "Ɣer zdat",
+  },
+  step3: {
+    title: "Taskant usrid",
+    subtitle: "Talɣa tbeddel akken tektayin-ik",
+  },
+  step4: {
+    title: "Asenqed",
+    subtitle: "Kra n tektayin ttbanen mačči d timagad",
+    unusual: "Taktayt-a mačči d tamagadt.",
+    check: "Ad sneqdeɣ",
+    correct: "D tidett",
+    allGood: "Ihegga!",
+    allGoodDesc: "Akk tektayin ttuɣalen d tameɣtut",
+    continue: "Kemmel",
+  },
+  step5: {
+    title: "Agzul",
+    subtitle: "Senqed tiktayin-ik send asentem",
+    fit: "Aṣeggem",
+    units: "Isagman",
+    note: "Tazmilt (afrayan)",
+    notePlaceholder: "Amedya: tawrirt n ufasi ifazen ugar",
+    validate: "Sentem",
+    saving: "Asekles...",
+  },
+};
+
 export type MeasurementsDict = typeof measurementsFr;
