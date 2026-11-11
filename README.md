@@ -283,15 +283,21 @@ tar -xzf backups/uploads-XXXX.tar.gz -C public     # images
 ## Structure du code
 
 ```
-prisma/schema.prisma        # Modèle de données complet (14 tables)
-prisma/seed.ts              # Données de démonstration FR/AR
+prisma/schema.prisma        # Modèle de données complet (18 tables dont 4 mesures)
+prisma/seed.ts              # Données de démonstration FR/AR + 2 profils mesures
 scripts/                    # backup, create-admin, docker-entrypoint, db-empty-check
 src/app/                    # layout racine (SEO, fonts) + page unique (SPA)
 src/app/api/                # API REST (contrat : docs/API_CONTRACT.md)
   ├─ meta|products|orders|track|contact   # public
+  ├─ measurements/          # profiles, sets, validate (nouveau)
   └─ admin/…                               # protégé par session
 src/lib/                    # router hash, pricing (source de vérité), validators Zod,
                             # auth (sessions bcrypt), rate-limit, mailer, storage, constantes (58 wilayas)
+src/lib/measurements/       # Module de prise de mesures (nouveau)
+  ├─ types.ts               # Types TypeScript
+  ├─ conversion.ts          # cm ↔ pouces, estimation
+  ├─ rules.ts               # Règles de cohérence
+  └─ interpolation.ts       # Déformation silhouette
 src/i18n/                   # noyau + dictionnaires par domaine (fr/ar)
 src/components/
   ├─ app/app-shell.tsx      # orchestrateur SPA (providers, transitions, lazy loading)
@@ -299,10 +305,16 @@ src/components/
   ├─ layout/                # navbar, footer, curseur, splash, particules, séparateurs berbères
   ├─ home|catalog|product/  # vitrine + configurateur (cœur métier)
   ├─ cart|checkout|confirmation|track/  # tunnel de commande
+  ├─ measurements/          # Module de prise de mesures (nouveau)
+  │  ├─ measurement-wizard.tsx  # Orchestrateur 5 étapes
+  │  ├─ steps/              # step0-setup, step1-body-map, step2-ruler, step3-live-preview, step4-validation, step5-summary
+  │  ├─ ui/                 # body-silhouette, measurement-ruler, tape-animation, progress-ring
+  │  └─ hooks/              # use-measurement-profile, use-coherence-check
   ├─ pages/                 # à propos, contact, guide tailles, légal
-  └─ admin/                 # back-office (11 vues)
+  └─ admin/                 # back-office (11 vues + onglet mesures)
 docs/API_CONTRACT.md        # contrat API exhaustif (fait foi)
 docs/ARCHITECTURE.md        # schéma de données, flux, sécurité
+docs/MESURES.md             # spécification module de mesures (nouveau)
 ```
 
 ---
