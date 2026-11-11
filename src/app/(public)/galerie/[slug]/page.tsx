@@ -31,18 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  const galleries = await db.gallery.findMany({
-    where: { visible: true },
-    select: { slug: true },
-  });
-
-  return galleries.map((gallery) => ({
-    slug: gallery.slug,
-  }));
-}
-
-export const revalidate = 300;
+// Force dynamic rendering - no static generation during build
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function GalleryDetailPage({ params }: Props) {
   const { slug } = await params;
