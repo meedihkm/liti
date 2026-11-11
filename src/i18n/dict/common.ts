@@ -230,21 +230,32 @@ export const common = {
   },
 }
 
-// Ajout traductions mesures wizard
-commonFr.product.measurements = {
-  ...commonFr.product.measurements,
-  useWizard: "Assistant mesures",
-  wizardSoon: "L'assistant de mesures interactif sera bientôt disponible",
+// Ajout traductions mesures wizard et profils
+const measurementExtensions = {
+  fr: {
+    useWizard: "Assistant mesures",
+    wizardSoon: "L'assistant de mesures interactif sera bientôt disponible",
+    profileLoaded: "Profil de mesures chargé avec succès",
+  },
+  ar: {
+    useWizard: "مساعد القياسات",
+    wizardSoon: "سيكون مساعد القياسات التفاعلي متاحًا قريبًا",
+    profileLoaded: "تم تحميل ملف القياسات بنجاح",
+  },
+  kab: {
+    useWizard: "Amɛiwen n tsektayin",
+    wizardSoon: "Amɛiwen n tsektayin ad yili d aktuf akken",
+    profileLoaded: "Amaɣnu n tsektayin yuli-d akken iwata",
+  },
 };
 
-commonAr.product.measurements = {
-  ...commonAr.product.measurements,
-  useWizard: "مساعد القياسات",
-  wizardSoon: "سيكون مساعد القياسات التفاعلي متاحًا قريبًا",
-};
-
-commonKab.product.measurements = {
-  ...commonKab.product.measurements,
-  useWizard: "Amɛiwen n tsektayin",
-  wizardSoon: "Amɛiwen n tsektayin ad yili d aktuf akken",
-};
+// Apply extensions (safe merge)
+if (common.fr.product && typeof common.fr.product.measurements === 'object') {
+  Object.assign(common.fr.product.measurements, measurementExtensions.fr);
+}
+if (common.ar.product && typeof common.ar.product.measurements === 'object') {
+  Object.assign(common.ar.product.measurements, measurementExtensions.ar);
+}
+if (common.kab.product && typeof common.kab.product.measurements === 'object') {
+  Object.assign(common.kab.product.measurements, measurementExtensions.kab);
+}
