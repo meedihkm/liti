@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
 // GET /api/reviews - Get published reviews
 export async function GET() {
   try {
-    const reviews = await prisma.review.findMany({
+    const reviews = await db.review.findMany({
       where: { published: true },
       orderBy: { publishedAt: 'desc' },
       take: 20,
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const review = await prisma.review.create({
+    const review = await db.review.create({
       data: {
         orderId: body.orderId || '',
         customerName: body.customerName,

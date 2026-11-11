@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 // GET /api/admin/stats - Dashboard statistics
@@ -11,23 +11,23 @@ export async function GET(req: NextRequest) {
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
     // Orders stats
-    const totalOrders = await prisma.order.count();
-    const ordersThisMonth = await prisma.order.count({
+    const totalOrders = await db.order.count();
+    const ordersThisMonth = await db.order.count({
       where: { createdAt: { gte: thirtyDaysAgo } },
     });
     
-    const ordersByStatus = await prisma.order.groupBy({
+    const ordersByStatus = await db.order.groupBy({
       by: ['status'],
       _count: true,
     });
 
     // Revenue stats
-    const totalRevenue = await prisma.order.aggregate({
+    const totalRevenue = await db.order.aggregate({
       _sum: { total: true },
       where: { status: { in: ['delivered', 'shipped'] } },
     });
 
-    const revenueThisMonth = await prisma.order.aggregate({
+    const revenueThisMonth = await db.order.aggregate({
       _sum: { total: true },
       where: {
         status: { in: ['delivered', 'shipped'] },
@@ -36,19 +36,19 @@ export async function GET(req: NextRequest) {
     });
 
     // Products stats
-    const totalProducts = await prisma.product.count();
-    const activeProducts = await prisma.product.count({
+    const totalProducts = await db.product.count();
+    const activeProducts = await db.product.count({
       where: { visible: true },
     });
 
     // Quotes stats
-    const totalQuotes = await prisma.quote.count();
-    const pendingQuotes = await prisma.quote.count({
+    const totalQuotes = await db.quote.count();
+    const pendingQuotes = await db.quote.count({
       where: { status: 'pending' },
     });
 
     // Recent activity
-    const recentOrders = await prisma.order.findMany({
+    const recentOrders = await db.order.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       select: {
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const recentQuotes = await prisma.quote.findMany({
+    const recentQuotes = await db.quote.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       select: {

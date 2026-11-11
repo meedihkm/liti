@@ -105,6 +105,15 @@ export async function getAuthUser(): Promise<AuthUser | null> {
   }
 }
 
+/** Vérifie l'utilisateur connecté et lance une erreur 401 si absent ou non-admin */
+export async function verifySession(): Promise<AuthUser> {
+  const user = await getAuthUser()
+  if (!user) {
+    throw new Error("Unauthorized")
+  }
+  return user
+}
+
 /** Nettoyage périodique des sessions expirées */
 export async function pruneSessions(): Promise<void> {
   await db.session.deleteMany({ where: { expiresAt: { lt: new Date() } } }).catch(() => {})

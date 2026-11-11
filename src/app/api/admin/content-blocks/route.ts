@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 // GET /api/admin/content-blocks - List all content blocks
@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     await verifySession(req);
 
-    const blocks = await prisma.contentBlock.findMany({
+    const blocks = await db.contentBlock.findMany({
       orderBy: { order: 'asc' },
     });
 
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check slug uniqueness
-    const existing = await prisma.contentBlock.findUnique({ where: { slug } });
+    const existing = await db.contentBlock.findUnique({ where: { slug } });
     if (existing) {
       return NextResponse.json(
         { error: 'Ce slug existe déjà' },
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const block = await prisma.contentBlock.create({
+    const block = await db.contentBlock.create({
       data: {
         slug,
         title: title || '',

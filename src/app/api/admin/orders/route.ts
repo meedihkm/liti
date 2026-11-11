@@ -1,4 +1,4 @@
-// GET /api/admin/orders — liste filtrée/paginée des commandes (staff OK)
+﻿// GET /api/admin/orders — liste filtrée/paginée des commandes (staff OK)
 // ?format=csv → export CSV (BOM UTF-8, séparateur « ; » friendly Excel FR)
 import { NextRequest, NextResponse } from "next/server"
 import type { Prisma } from "@prisma/client"
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const pageSize = Math.min(Math.max(parseIntOr(sp.get("pageSize"), 20), 1), 100)
 
   // ── Filtres ─────────────────────────────────────────────────
-  const where: Prisma.OrderWhereInput = {}
+  const where: db.OrderWhereInput = {}
   if (status) {
     if (!ORDER_STATUSES.includes(status as (typeof ORDER_STATUSES)[number])) {
       return jsonError(400, "Statut invalide")
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   // ── Tri ─────────────────────────────────────────────────────
-  let orderBy: Prisma.OrderOrderByWithRelationInput[]
+  let orderBy: db.OrderOrderByWithRelationInput[]
   switch (sort) {
     case "total-asc":
       orderBy = [{ total: "asc" }, { createdAt: "desc" }]

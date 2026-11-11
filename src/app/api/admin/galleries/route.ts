@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 // GET /api/admin/galleries - List all galleries
@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     await verifySession(req);
 
-    const galleries = await prisma.gallery.findMany({
+    const galleries = await db.gallery.findMany({
       include: {
         images: {
           orderBy: { order: 'asc' },
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check slug uniqueness
-    const existing = await prisma.gallery.findUnique({ where: { slug } });
+    const existing = await db.gallery.findUnique({ where: { slug } });
     if (existing) {
       return NextResponse.json(
         { error: 'Ce slug existe déjà' },
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const gallery = await prisma.gallery.create({
+    const gallery = await db.gallery.create({
       data: {
         slug,
         title,

@@ -1,7 +1,7 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { motion } from 'motion/react';
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export const revalidate = 300; // revalidate every 5 minutes
 
 export default async function GaleriePage() {
-  const galleries = await prisma.gallery.findMany({
+  const galleries = await db.gallery.findMany({
     where: { visible: true },
     include: {
       images: {
@@ -23,7 +23,7 @@ export default async function GaleriePage() {
     orderBy: { order: 'asc' },
   });
 
-  const hero = await prisma.contentBlock.findFirst({
+  const hero = await db.contentBlock.findFirst({
     where: {
       slug: 'gallery-hero',
       visible: true,

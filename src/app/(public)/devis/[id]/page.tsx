@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { QuoteDetail } from '@/components/quote/quote-detail';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const quote = await prisma.quote.findUnique({ where: { id } });
+  const quote = await db.quote.findUnique({ where: { id } });
 
   if (!quote) {
     return { title: 'Devis introuvable | Taqendurt' };
@@ -26,7 +26,7 @@ export const revalidate = 0; // Always fresh data for quotes
 export default async function QuoteDetailPage({ params }: Props) {
   const { id } = await params;
 
-  const quote = await prisma.quote.findUnique({
+  const quote = await db.quote.findUnique({
     where: { id },
     include: {
       messages: {

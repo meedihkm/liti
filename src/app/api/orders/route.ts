@@ -1,4 +1,4 @@
-// POST /api/orders — création de commande (checkout public)
+﻿// POST /api/orders — création de commande (checkout public)
 // Prix TOUJOURS recalculé serveur — aucune valeur de prix lue depuis le client.
 import { NextRequest, type NextResponse } from "next/server"
 import { db } from "@/lib/db"
@@ -212,7 +212,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       total,
       note: data.customer.note?.trim() ?? "",
       items: {
-        create: prepared as Prisma.OrderItemCreateWithoutOrderInput[],
+        create: prepared as db.OrderItemCreateWithoutOrderInput[],
       },
       history: {
         create: { status: "pending", note: "Commande reçue", actor: "system" },

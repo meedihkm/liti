@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 import { ensureTrackingToken, getTrackingUrl } from '@/lib/order-utils';
 
 // POST /api/tracking - Get tracking link by order number and phone
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Find order
-    const order = await prisma.order.findFirst({
+    const order = await db.order.findFirst({
       where: {
         number: orderNumber,
         phone,

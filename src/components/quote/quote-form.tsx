@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { WILAYAS } from '@/lib/wilayas';
+import { WILAYAS } from '@/lib/constants';
 
 export function QuoteForm() {
   const router = useRouter();

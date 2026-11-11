@@ -1,5 +1,5 @@
-import { MetadataRoute } from 'next';
-import { prisma } from '@/lib/db';
+﻿import { MetadataRoute } from 'next';
+import { db } from '@/lib/db';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://myrobe-giize.com';
@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Products
-  const products = await prisma.product.findMany({
+  const products = await db.product.findMany({
     where: { visible: true },
     select: { id: true, updatedAt: true },
   });
@@ -35,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Galleries
-  const galleries = await prisma.gallery.findMany({
+  const galleries = await db.gallery.findMany({
     where: { visible: true },
     select: { slug: true, updatedAt: true },
   });
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Blog posts (if any)
-  const posts = await prisma.blogPost.findMany({
+  const posts = await db.blogPost.findMany({
     where: { published: true },
     select: { slug: true, updatedAt: true },
   });

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 // POST /api/admin/gallery-images - Add image to gallery
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Verify gallery exists
-    const gallery = await prisma.gallery.findUnique({
+    const gallery = await db.gallery.findUnique({
       where: { id: galleryId },
     });
 
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const image = await prisma.galleryImage.create({
+    const image = await db.galleryImage.create({
       data: {
         galleryId,
         url,

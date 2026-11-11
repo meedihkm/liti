@@ -1,4 +1,4 @@
-// GET /api/products — liste paginée + filtres combinés (AND), produits visibles uniquement
+﻿// GET /api/products — liste paginée + filtres combinés (AND), produits visibles uniquement
 import { NextRequest, type NextResponse } from "next/server"
 import type { Prisma } from "@prisma/client"
 import { db } from "@/lib/db"
@@ -29,19 +29,19 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const sort = sp.get("sort")?.trim() || "newest"
 
   // ── Filtres (combinés en AND) ───────────────────────────────
-  const where: Prisma.ProductWhereInput = { visible: true }
+  const where: db.ProductWhereInput = { visible: true }
   if (category) where.category = { slug: category }
   if (fabric) where.fabrics = { some: { fabricId: fabric } }
   if (color) where.colors = { some: { colorId: color } }
   if (occasion) where.occasion = occasion
   if (featured === "true") where.featured = true
-  const price: Prisma.IntFilter = {}
+  const price: db.IntFilter = {}
   if (Number.isFinite(min) && min >= 0) price.gte = min
   if (Number.isFinite(max) && max >= 0) price.lte = max
   if (price.gte !== undefined || price.lte !== undefined) where.basePrice = price
 
   // ── Tri ─────────────────────────────────────────────────────
-  let orderBy: Prisma.ProductOrderByWithRelationInput[]
+  let orderBy: db.ProductOrderByWithRelationInput[]
   switch (sort) {
     case "price-asc":
       orderBy = [{ basePrice: "asc" }, { createdAt: "desc" }]

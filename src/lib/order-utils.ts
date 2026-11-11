@@ -1,4 +1,4 @@
-import { prisma } from './db';
+﻿import { prisma } from './db';
 import { generateTrackingToken, getTrackingUrl } from './tracking';
 
 /**
@@ -6,7 +6,7 @@ import { generateTrackingToken, getTrackingUrl } from './tracking';
  */
 export async function ensureTrackingToken(orderId: string): Promise<string> {
   // Check if tracking token already exists
-  const existing = await prisma.trackingToken.findUnique({
+  const existing = await db.trackingToken.findUnique({
     where: { orderId },
   });
 
@@ -21,7 +21,7 @@ export async function ensureTrackingToken(orderId: string): Promise<string> {
 
   // Ensure uniqueness
   while (attempts < maxAttempts) {
-    const exists = await prisma.trackingToken.findUnique({
+    const exists = await db.trackingToken.findUnique({
       where: { token },
     });
 
@@ -38,7 +38,7 @@ export async function ensureTrackingToken(orderId: string): Promise<string> {
   }
 
   // Create tracking token
-  const trackingToken = await prisma.trackingToken.create({
+  const trackingToken = await db.trackingToken.create({
     data: {
       orderId,
       token,

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 // GET /api/admin/quotes - List all quotes
@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     await verifySession(req);
 
-    const quotes = await prisma.quote.findMany({
+    const quotes = await db.quote.findMany({
       include: {
         messages: {
           orderBy: { createdAt: 'desc' },

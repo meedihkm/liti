@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 import { OrderTracking } from '@/components/order/order-tracking';
 
 type Props = {
@@ -19,7 +19,7 @@ export const revalidate = 0; // Always fresh for order tracking
 export default async function SuiviCommandePage({ params }: Props) {
   const { token } = await params;
 
-  const trackingToken = await prisma.trackingToken.findUnique({
+  const trackingToken = await db.trackingToken.findUnique({
     where: { token },
     include: {
       order: {

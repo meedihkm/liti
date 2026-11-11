@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/db';
+import { db } from '@/lib/db';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -10,7 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const gallery = await prisma.gallery.findUnique({
+  const gallery = await db.gallery.findUnique({
     where: { slug },
   });
 
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const galleries = await prisma.gallery.findMany({
+  const galleries = await db.gallery.findMany({
     where: { visible: true },
     select: { slug: true },
   });
@@ -47,7 +47,7 @@ export const revalidate = 300;
 export default async function GalleryDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  const gallery = await prisma.gallery.findUnique({
+  const gallery = await db.gallery.findUnique({
     where: { slug, visible: true },
     include: {
       images: {

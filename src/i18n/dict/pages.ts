@@ -806,4 +806,3 @@ const ar: PagesDict = {
 const kab: PagesDict = fr // Temporary: use French as fallback for Kabyle
 
 export const pages: { fr: PagesDict; ar: PagesDict; kab: PagesDict } = { fr, ar, kab }
-      title: "Ɣef-nneɣ",

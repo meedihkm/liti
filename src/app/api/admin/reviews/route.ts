@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 // GET /api/admin/reviews - Get all reviews
@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     await verifySession(req);
 
-    const reviews = await prisma.review.findMany({
+    const reviews = await db.review.findMany({
       orderBy: { createdAt: 'desc' },
     });
 
@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest) {
     const body = await req.json();
     const { id, published } = body;
 
-    const review = await prisma.review.update({
+    const review = await db.review.update({
       where: { id },
       data: {
         published,

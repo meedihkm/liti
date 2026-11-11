@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
 // POST /api/promo-codes/validate
 export async function POST(req: NextRequest) {
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Code requis' }, { status: 400 });
     }
 
-    const promoCode = await prisma.promoCode.findUnique({
+    const promoCode = await db.promoCode.findUnique({
       where: { code: code.toUpperCase() },
     });
 

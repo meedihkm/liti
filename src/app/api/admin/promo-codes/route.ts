@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
 
 // GET /api/admin/promo-codes
@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     await verifySession(req);
 
-    const promoCodes = await prisma.promoCode.findMany({
+    const promoCodes = await db.promoCode.findMany({
       orderBy: { createdAt: 'desc' },
     });
 
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     await verifySession(req);
     const body = await req.json();
 
-    const promoCode = await prisma.promoCode.create({
+    const promoCode = await db.promoCode.create({
       data: {
         code: body.code.toUpperCase(),
         type: body.type,
