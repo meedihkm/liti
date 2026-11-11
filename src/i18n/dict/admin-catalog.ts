@@ -456,4 +456,3 @@ export const adminCatalog = {
     },
   },
 }
-}
