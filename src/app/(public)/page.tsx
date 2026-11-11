@@ -1,9 +1,14 @@
-import { redirect } from 'next/navigation';
+'use client';
 
-// Force dynamic rendering for redirects
-export const dynamic = 'force-dynamic';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function RootPage() {
-  // Temporary: redirect to hash router home
-  redirect('/#/');
+  const router = useRouter();
+  
+  useEffect(() => {
+    router.replace('/#/');
+  }, [router]);
+
+  return null;
 }
