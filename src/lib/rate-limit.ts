@@ -46,4 +46,5 @@ export const RATE_LIMITS = {
   contact: { limit: 3, windowMs: 15 * 60 * 1000 }, // 3 messages / 15 min / IP
   login: { limit: 15, windowMs: 10 * 60 * 1000 }, // 15 tentatives / 10 min / IP (marge tests & démo)
   track: { limit: 20, windowMs: 5 * 60 * 1000 },
+  default: { limit: 30, windowMs: 5 * 60 * 1000 }, // 30 requêtes / 5 min / IP (API générale)
 } as const
