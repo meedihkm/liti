@@ -15,10 +15,8 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
-  // Force dynamic rendering during build to avoid database queries
-  experimental: {
-    dynamicIO: true,
-  },
+  // Disable component caching to prevent static generation during build
+  cacheComponents: false,
   // Domaines de preview de la plateforme autorisés à charger les
   // ressources /_next/* (chunks, HMR) depuis le serveur de dev.
   // Sans ça : « Requête cross-origin refusée » dans le preview.
