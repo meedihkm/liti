@@ -39,32 +39,44 @@ export async function GET(req: NextRequest) {
       orderBy: { updatedAt: "desc" },
     });
 
-    // Sérialiser
-    const serialized = profiles.map((p) => ({
-      id: p.id,
-      name: p.name,
-      relation: p.relation,
-      createdAt: p.createdAt.toISOString(),
-      updatedAt: p.updatedAt.toISOString(),
-      latestMeasurement: p.measurements[0]
-        ? {
-            id: p.measurements[0].id,
-            method: p.measurements[0].method,
-            values: JSON.parse(p.measurements[0].valuesJson),
-            fit: p.measurements[0].fit,
-            displayUnit: p.measurements[0].displayUnit,
-            confirmed: JSON.parse(p.measurements[0].confirmedJson),
-            note: p.measurements[0].note,
-            createdAt: p.measurements[0].createdAt.toISOString(),
-            validation: p.measurements[0].validations[0]
-              ? {
-                  status: p.measurements[0].validations[0].status,
-                  validatedAt: p.measurements[0].validations[0].validatedAt.toISOString(),
-                }
-              : null,
-          }
-        : null,
-    }));
+    // Sérialiser dans le format attendu par le client
+    const serialized = profiles.map((p) => {
+      const latestMeasurement = p.measurements[0];
+      let isValidated = false;
+      let measurementValues: Record<string, number> = {};
+
+      if (latestMeasurement) {
+        // Parse les valeurs de mesure
+        const values = JSON.parse(latestMeasurement.valuesJson);
+        measurementValues = values;
+
+        // Vérifier validation
+        if (latestMeasurement.validations[0]?.status === "approved") {
+          isValidated = true;
+        }
+      }
+
+      return {
+        id: p.id,
+        name: p.name,
+        isValidated,
+        createdAt: p.createdAt.toISOString(),
+        measurements: latestMeasurement
+          ? [
+              {
+                id: latestMeasurement.id,
+                chest: measurementValues.chest || 0,
+                waist: measurementValues.waist || 0,
+                hips: measurementValues.hips || 0,
+                shoulders: measurementValues.shoulders || 0,
+                sleeve: measurementValues.sleeve || 0,
+                length: measurementValues.length || 0,
+                createdAt: latestMeasurement.createdAt.toISOString(),
+              },
+            ]
+          : [],
+      };
+    });
 
     return NextResponse.json({ profiles: serialized });
   } catch (err: unknown) {
