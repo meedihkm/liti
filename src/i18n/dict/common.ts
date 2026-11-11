@@ -229,3 +229,22 @@ export const common = {
     },
   },
 }
+
+// Ajout traductions mesures wizard
+commonFr.product.measurements = {
+  ...commonFr.product.measurements,
+  useWizard: "Assistant mesures",
+  wizardSoon: "L'assistant de mesures interactif sera bientôt disponible",
+};
+
+commonAr.product.measurements = {
+  ...commonAr.product.measurements,
+  useWizard: "مساعد القياسات",
+  wizardSoon: "سيكون مساعد القياسات التفاعلي متاحًا قريبًا",
+};
+
+commonKab.product.measurements = {
+  ...commonKab.product.measurements,
+  useWizard: "Amɛiwen n tsektayin",
+  wizardSoon: "Amɛiwen n tsektayin ad yili d aktuf akken",
+};

@@ -366,7 +366,7 @@ export function Configurator({
           {t("product.sizes.seeGuide")}
         </button>
 
-        {/* Champs de mesures (sur-mesure) */}
+        {/* Champs de mesures (sur-mesure) - avec lien vers wizard */}
         <AnimatePresence initial={false}>
           {isCustom && (
             <motion.div
@@ -377,12 +377,26 @@ export function Configurator({
               className="overflow-hidden"
             >
               <div className="mt-4 rounded-xl border border-gold/25 bg-gold/5 p-4">
-                <p className="text-xs leading-relaxed text-muted-foreground">
-                  {t("product.measurements.help")}
-                </p>
-                <p className="mt-2 text-xs font-semibold text-gold">
-                  {t("product.sizes.customFee", { amount: formatDA(product.customSizeFee, lang) })}
-                </p>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs leading-relaxed text-muted-foreground">
+                      {t("product.measurements.help")}
+                    </p>
+                    <p className="mt-2 text-xs font-semibold text-gold">
+                      {t("product.sizes.customFee", { amount: formatDA(product.customSizeFee, lang) })}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      // TODO: Ouvrir le MeasurementWizard
+                      toast.info(t("product.measurements.wizardSoon"));
+                    }}
+                    className="shrink-0 flex items-center gap-1.5 rounded-lg bg-gold/15 px-3 py-2 text-xs font-semibold text-gold hover:bg-gold/25 transition-colors"
+                  >
+                    <Ruler className="h-3.5 w-3.5" />
+                    {t("product.measurements.useWizard")}
+                  </button>
+                </div>
                 <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {MEASUREMENT_FIELDS.map((f) => {
                     const value = measurements[f.key]

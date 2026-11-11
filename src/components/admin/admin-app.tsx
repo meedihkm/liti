@@ -22,6 +22,7 @@ import {
   Languages,
   Store,
   Loader2,
+  Ruler,
 } from "lucide-react";
 import { api, setSessionToken } from "@/lib/api-client";
 import { useRouter } from "@/lib/router";
@@ -40,6 +41,7 @@ import { OptionsView } from "./options-view";
 import { ShippingView } from "./shipping-view";
 import { MessagesView } from "./messages-view";
 import { SettingsView } from "./settings-view";
+import { MeasurementsView } from "./measurements-view";
 
 interface NavItem {
   section: string
@@ -54,6 +56,7 @@ const NAV: NavItem[] = [
   { section: "orders", labelKey: "admin.shell.nav.orders", icon: ShoppingBag, adminOnly: false, match: (s) => s[0] === "orders" },
   { section: "products", labelKey: "admin.shell.nav.products", icon: Shirt, adminOnly: true, match: (s) => s[0] === "products" },
   { section: "options", labelKey: "admin.shell.nav.options", icon: Shapes, adminOnly: true, match: (s) => s[0] === "options" },
+  { section: "measurements", labelKey: "admin.shell.nav.measurements", icon: Ruler, adminOnly: true, match: (s) => s[0] === "measurements" },
   { section: "shipping", labelKey: "admin.shell.nav.shipping", icon: Truck, adminOnly: true, match: (s) => s[0] === "shipping" },
   { section: "messages", labelKey: "admin.shell.nav.messages", icon: Mail, adminOnly: false, match: (s) => s[0] === "messages" },
   { section: "settings", labelKey: "admin.shell.nav.settings", icon: Settings, adminOnly: true, match: (s) => s[0] === "settings" },
@@ -117,6 +120,9 @@ export function AdminApp() {
       break
     case "options":
       view = <OptionsView />
+      break
+    case "measurements":
+      view = <MeasurementsView />
       break
     case "shipping":
       view = <ShippingView />
