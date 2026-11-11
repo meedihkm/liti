@@ -35,6 +35,7 @@ interface MeasurementProfile {
 interface MeasurementProfileSelectorProps {
   onSelect: (measurements: Record<string, number>) => void;
   onCreateNew: () => void;
+  onProfileCreated?: () => void;
   selectedProfileId?: string;
   lang?: Lang;
 }
@@ -84,6 +85,7 @@ const translations = {
 export function MeasurementProfileSelector({
   onSelect,
   onCreateNew,
+  onProfileCreated,
   selectedProfileId,
   lang = "fr",
 }: MeasurementProfileSelectorProps) {

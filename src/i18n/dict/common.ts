@@ -235,17 +235,20 @@ const measurementExtensions = {
   fr: {
     useWizard: "Assistant mesures",
     wizardSoon: "L'assistant de mesures interactif sera bientôt disponible",
-    profileLoaded: "Profil de mesures chargé avec succès",
+    // Ajout traductions pour profil créé
+  profileCreated: "Profil de mesures créé avec succès",
   },
   ar: {
     useWizard: "مساعد القياسات",
     wizardSoon: "سيكون مساعد القياسات التفاعلي متاحًا قريبًا",
-    profileLoaded: "تم تحميل ملف القياسات بنجاح",
+    // Ajout traductions pour profil créé
+  profileCreated: "تم إنشاء ملف القياسات بنجاح",
   },
   kab: {
     useWizard: "Amɛiwen n tsektayin",
     wizardSoon: "Amɛiwen n tsektayin ad yili d aktuf akken",
-    profileLoaded: "Amaɣnu n tsektayin yuli-d akken iwata",
+    // Ajout traductions pour profil créé
+  profileCreated: "Amaɣnu n tsektayin yettwarna akken iwata",
   },
 };
 

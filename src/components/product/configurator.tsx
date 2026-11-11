@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Ruler, Minus, Plus, ShoppingBag, CalendarDays, Sparkles } from "lucide-react";
+import { Check, Ruler, Minus, Plus, ShoppingBag, CalendarDays, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { usePublicData } from "@/components/providers/public-data-provider";
@@ -15,6 +16,22 @@ import { MeasurementProfileSelector } from "@/components/measurements/measuremen
 import { STANDARD_SIZES, MEASUREMENT_FIELDS, LENGTHS } from "@/lib/constants";
 import type { ProductDTO } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+// Lazy load du wizard pour éviter d'alourdir le bundle principal
+const MeasurementWizard = dynamic(
+  () => import("@/components/measurements/measurement-wizard").then((mod) => ({ default: mod.MeasurementWizard })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-gold" />
+          <p className="text-sm text-muted-foreground">Chargement de l'assistant...</p>
+        </div>
+      </div>
+    ),
+  }
+);
 
 // ─────────────────────────────────────────────────────────────
 // CONFIGURATEUR — cœur du projet. Tissu → couleur → taille (ou
@@ -90,6 +107,8 @@ export function Configurator({
   const [note, setNote] = useState("")
   const [added, setAdded] = useState(false)
   const [flyKey, setFlyKey] = useState(0)
+  const [wizardOpen, setWizardOpen] = useState(false)
+  const [profileSelectorKey, setProfileSelectorKey] = useState(0)
 
   // ── Disponibilités tissu ↔ couleur ──
   const fabricConfig = product.fabrics.find((f) => f.id === fabricId)
@@ -380,12 +399,17 @@ export function Configurator({
               <div className="mt-4 space-y-4">
                 {/* Sélecteur de profils */}
                 <MeasurementProfileSelector
+                  key={profileSelectorKey}
                   onSelect={(selectedMeasurements) => {
                     setMeasurements(selectedMeasurements);
                     toast.success(t("product.measurements.profileLoaded"));
                   }}
                   onCreateNew={() => {
-                    toast.info(t("product.measurements.wizardSoon"));
+                    setWizardOpen(true);
+                  }}
+                  onProfileCreated={() => {
+                    // Force refresh du sélecteur après création
+                    setProfileSelectorKey((k) => k + 1);
                   }}
                   selectedProfileId={undefined}
                   lang={lang}
@@ -450,6 +474,20 @@ export function Configurator({
           )}
         </AnimatePresence>
       </Section>
+
+      {/* Wizard de mesures (modal plein écran) */}
+      {wizardOpen && (
+        <MeasurementWizard
+          lang={lang}
+          onClose={() => setWizardOpen(false)}
+          onComplete={(newMeasurements) => {
+            setMeasurements(newMeasurements);
+            setWizardOpen(false);
+            setProfileSelectorKey((k) => k + 1); // Refresh la liste
+            toast.success(t("product.measurements.profileCreated"));
+          }}
+        />
+      )}
 
       {/* 4 — Broderie */}
       {product.embroideries.length > 0 && (

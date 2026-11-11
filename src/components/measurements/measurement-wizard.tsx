@@ -13,17 +13,12 @@ import { Step5Summary } from "./steps/step5-summary";
 import type { MeasurementValues, MeasurementFit, MeasurementUnit, MeasurementMethod, MeasurementKey } from "@/lib/measurements/types";
 
 interface MeasurementWizardProps {
-  onComplete: (data: {
-    measurements: MeasurementValues;
-    fit: MeasurementFit;
-    unit: MeasurementUnit;
-    method: MeasurementMethod;
-    note: string;
-  }) => void;
+  onComplete: (measurements: Record<string, number>) => void;
+  onClose?: () => void;
   lang?: "fr" | "ar" | "kab";
 }
 
-export function MeasurementWizard({ onComplete, lang = "fr" }: MeasurementWizardProps) {
+export function MeasurementWizard({ onComplete, onClose, lang = "fr" }: MeasurementWizardProps) {
   const [step, setStep] = useState(0);
   const [config, setConfig] = useState<{
     person: string;
@@ -71,13 +66,8 @@ export function MeasurementWizard({ onComplete, lang = "fr" }: MeasurementWizard
   const handleValidate = async () => {
     if (!config) return;
 
-    await onComplete({
-      measurements: measurements as MeasurementValues,
-      fit: config.fit,
-      unit: config.unit,
-      method: config.method,
-      note,
-    });
+    // Appeler onComplete avec juste les mesures
+    onComplete(measurements as Record<string, number>);
   };
 
   if (step === 0) {
