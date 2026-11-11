@@ -18,16 +18,16 @@ interface Step2RulerProps {
   onNext: () => void;
   onPrevious: () => void;
   unit?: MeasurementUnit;
-  lang?: "fr" | "ar";
+  lang?: "fr" | "ar" | "kab";
 }
 
-const ZONE_LABELS: Record<MeasurementKey, { fr: string; ar: string }> = {
-  chest: { fr: "Tour de poitrine", ar: "محيط الصدر" },
-  waist: { fr: "Tour de taille", ar: "محيط الخصر" },
-  hips: { fr: "Tour de hanches", ar: "محيط الوركين" },
-  shoulders: { fr: "Largeur d'épaules", ar: "عرض الكتفين" },
-  sleeve: { fr: "Longueur de manche", ar: "طول الكم" },
-  length: { fr: "Longueur totale", ar: "الطول الكلي" },
+const ZONE_LABELS: Record<MeasurementKey, { fr: string; ar: string; kab: string }> = {
+  chest: { fr: "Tour de poitrine", ar: "محيط الصدر", kab: "Idmaren" },
+  waist: { fr: "Tour de taille", ar: "محيط الخصر", kab: "Talalit" },
+  hips: { fr: "Tour de hanches", ar: "محيط الوركين", kab: "Iqerqiben" },
+  shoulders: { fr: "Largeur d'épaules", ar: "عرض الكتفين", kab: "Tehri n twririn" },
+  sleeve: { fr: "Longueur de manche", ar: "طول الكم", kab: "Teɣzi n ufus" },
+  length: { fr: "Longueur totale", ar: "الطول الكلي", kab: "Teɣzi meṛṛa" },
 };
 
 export function Step2Ruler({

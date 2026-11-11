@@ -15,7 +15,7 @@ interface Step0SetupProps {
     fit: MeasurementFit;
     unit: MeasurementUnit;
   }) => void;
-  lang?: "fr" | "ar";
+  lang?: "fr" | "ar" | "kab";
 }
 
 export function Step0Setup({ onComplete, lang = "fr" }: Step0SetupProps) {

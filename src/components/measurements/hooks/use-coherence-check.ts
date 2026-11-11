@@ -8,7 +8,7 @@ import type { MeasurementValues, CoherenceAlert } from "@/lib/measurements/types
 
 export function useCoherenceCheck(
   measurements: Partial<MeasurementValues>,
-  lang: "fr" | "ar" = "fr"
+  lang: "fr" | "ar" | "kab" = "fr"
 ): CoherenceAlert[] {
   return useMemo(() => {
     const complete = measurements as MeasurementValues;

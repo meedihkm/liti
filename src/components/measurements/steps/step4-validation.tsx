@@ -14,7 +14,7 @@ interface Step4ValidationProps {
   onConfirm: (field: MeasurementKey) => void;
   onRecheck: (field: MeasurementKey) => void;
   onNext: () => void;
-  lang?: "fr" | "ar";
+  lang?: "fr" | "ar" | "kab";
 }
 
 export function Step4Validation({

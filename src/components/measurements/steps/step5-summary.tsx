@@ -18,7 +18,7 @@ interface Step5SummaryProps {
   onNoteChange: (note: string) => void;
   onEdit: (field: string) => void;
   onValidate: () => void;
-  lang?: "fr" | "ar";
+  lang?: "fr" | "ar" | "kab";
 }
 
 export function Step5Summary({

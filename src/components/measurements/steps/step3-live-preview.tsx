@@ -11,7 +11,7 @@ import type { MeasurementValues } from "@/lib/measurements/types";
 
 interface Step3LivePreviewProps {
   measurements: Partial<MeasurementValues>;
-  lang?: "fr" | "ar";
+  lang?: "fr" | "ar" | "kab";
 }
 
 export function Step3LivePreview({ measurements, lang = "fr" }: Step3LivePreviewProps) {

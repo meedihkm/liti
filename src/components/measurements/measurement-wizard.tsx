@@ -20,7 +20,7 @@ interface MeasurementWizardProps {
     method: MeasurementMethod;
     note: string;
   }) => void;
-  lang?: "fr" | "ar";
+  lang?: "fr" | "ar" | "kab";
 }
 
 export function MeasurementWizard({ onComplete, lang = "fr" }: MeasurementWizardProps) {
