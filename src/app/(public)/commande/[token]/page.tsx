@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
 import { OrderTracking } from '@/components/order/order-tracking';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ token: string }>;
 };

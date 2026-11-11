@@ -1,6 +1,10 @@
 ﻿import { MetadataRoute } from 'next';
 import { db } from '@/lib/db';
 
+// Force dynamic rendering - no static generation during build
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://myrobe-giize.com';
 

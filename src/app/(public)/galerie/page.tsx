@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { db } from '@/lib/db';
 import { motion } from 'motion/react';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Galerie | Taqendurt',
   description: 'Découvrez notre collection de robes kabyles traditionnelles et modernes',

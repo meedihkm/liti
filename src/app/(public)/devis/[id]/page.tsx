@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
 import { QuoteDetail } from '@/components/quote/quote-detail';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ id: string }>;
 };
