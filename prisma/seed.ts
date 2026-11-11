@@ -623,3 +623,56 @@ if (process.argv[1] && /seed\.ts$/.test(process.argv[1])) {
       process.exit(1)
     })
 }
+
+  // ══════════════════════════════════════════════════════════════
+  // PROFILS DE MESURES (demo)
+  // ══════════════════════════════════════════════════════════════
+
+  const measurementProfiles = [
+    {
+      name: "Mes mesures",
+      relation: "self",
+      sessionId: "demo-session-1",
+      measurements: {
+        method: "tape",
+        values: { chest: 92, waist: 74, hips: 102, length: 145, sleeve: 58, shoulders: 39 },
+        fit: "comfortable",
+        displayUnit: "cm",
+      },
+    },
+    {
+      name: "Amira (ma fille)",
+      relation: "daughter",
+      sessionId: "demo-session-1",
+      measurements: {
+        method: "estimation",
+        values: { chest: 85, waist: 68, hips: 94, length: 135, sleeve: 54, shoulders: 37 },
+        fit: "comfortable",
+        displayUnit: "cm",
+      },
+    },
+  ]
+
+  for (const profileData of measurementProfiles) {
+    const profile = await db.measurementProfile.create({
+      data: {
+        name: profileData.name,
+        relation: profileData.relation as "self" | "daughter" | "sister" | "other",
+        sessionId: profileData.sessionId,
+      },
+    })
+
+    await db.measurementSet.create({
+      data: {
+        profileId: profile.id,
+        method: profileData.measurements.method as "tape" | "dress" | "estimation",
+        valuesJson: JSON.stringify(profileData.measurements.values),
+        fit: profileData.measurements.fit as "fitted" | "comfortable" | "loose",
+        displayUnit: profileData.measurements.displayUnit as "cm" | "inches",
+        confirmedJson: JSON.stringify({}),
+        note: "",
+      },
+    })
+  }
+
+  console.log("✓ 2 profils de mesures créés")

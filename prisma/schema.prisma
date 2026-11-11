@@ -485,3 +485,96 @@ model Review {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
+
+// ══════════════════════════════════════════════════════════════
+// MODULE DE PRISE DE MESURES
+// ══════════════════════════════════════════════════════════════
+
+// Profil de mesures (pour une cliente identifiée)
+model MeasurementProfile {
+  id          String   @id @default(cuid())
+  userId      String   @default("") // Nullable : lien magique sans compte
+  sessionId   String   @default("") // Fallback : identifiant de session temporaire
+  
+  name        String   // "Moi", "Ma fille Amira", "Ma sœur"
+  relation    String   // "self" | "daughter" | "sister" | "other"
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  measurements MeasurementSet[]
+  
+  @@index([userId])
+  @@index([sessionId])
+}
+
+// Jeu de mesures (historisé)
+model MeasurementSet {
+  id        String   @id @default(cuid())
+  profileId String
+  profile   MeasurementProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  // Méthode d'acquisition
+  method    String   // "tape" | "dress" | "estimation"
+  
+  // Valeurs en centimètres (JSON strictement typé côté serveur)
+  // { chest: 92, waist: 74, hips: 102, length: 145, sleeve: 58, shoulders: 39 }
+  valuesJson String  @map("values_json")
+  
+  // Ajustement choisi
+  fit       String   @default("comfortable") // "fitted" | "comfortable" | "loose"
+  
+  // Unité d'affichage choisie par la cliente
+  displayUnit String @default("cm") // "cm" | "inches"
+  
+  // Drapeaux de confirmation (mesures validées malgré alerte)
+  confirmedJson String @default("{}") @map("confirmed_json") // { chest: true, hips: true }
+  
+  // Note libre
+  note      String   @default("")
+  
+  createdAt DateTime @default(now())
+  
+  validations MeasurementValidation[]
+  
+  @@index([profileId])
+  @@index([createdAt])
+}
+
+// Validation atelier
+model MeasurementValidation {
+  id              String   @id @default(cuid())
+  measurementSetId String
+  measurementSet  MeasurementSet @relation(fields: [measurementSetId], references: [id], onDelete: Cascade)
+  
+  // Statut de validation
+  status     String   // "pending" | "approved" | "needs_correction"
+  
+  // Si correction nécessaire, mesures concernées
+  // { chest: "trop serré, prendre +2cm", waist: "vérifier" }
+  correctionsJson String @default("{}") @map("corrections_json")
+  
+  // Auteur (admin/staff)
+  validatedBy String
+  validatedAt DateTime @default(now())
+  
+  comment String   @default("")
+  
+  @@index([measurementSetId])
+}
+
+// Historique des modifications
+model MeasurementHistory {
+  id              String   @id @default(cuid())
+  measurementSetId String
+  
+  field      String   // "chest", "waist", etc.
+  oldValue   Float
+  newValue   Float
+  
+  modifiedBy String   // "client" | admin name
+  modifiedAt DateTime @default(now())
+  
+  @@index([measurementSetId])
+  @@index([modifiedAt])
+}

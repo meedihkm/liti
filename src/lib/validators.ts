@@ -192,3 +192,45 @@ export const settingsSchema = z.record(z.string(), z.string())
 
 export type OrderCreateInput = z.infer<typeof orderCreateSchema>
 export type ProductUpsertInput = z.infer<typeof productUpsertSchema>
+
+// ── Mesures (module interactif) ───────────────────────────────
+
+export const measurementValuesSchema = z.object({
+  chest: z.number().min(60).max(160),
+  waist: z.number().min(50).max(150),
+  hips: z.number().min(60).max(170),
+  shoulders: z.number().min(30).max(60),
+  sleeve: z.number().min(30).max(75),
+  length: z.number().min(80).max(170),
+})
+
+export const measurementProfileCreateSchema = z.object({
+  name: z.string().min(1).max(100),
+  relation: z.enum(["self", "daughter", "sister", "other"]),
+  sessionId: z.string().optional(),
+})
+
+export const measurementSetCreateSchema = z.object({
+  profileId: z.string().min(1),
+  method: z.enum(["tape", "dress", "estimation"]),
+  values: measurementValuesSchema,
+  fit: z.enum(["fitted", "comfortable", "loose"]).default("comfortable"),
+  displayUnit: z.enum(["cm", "inches"]).default("cm"),
+  confirmed: z.record(z.string(), z.boolean()).default({}),
+  note: z.string().max(500).default(""),
+})
+
+export const measurementSetUpdateSchema = z.object({
+  values: measurementValuesSchema.optional(),
+  fit: z.enum(["fitted", "comfortable", "loose"]).optional(),
+  displayUnit: z.enum(["cm", "inches"]).optional(),
+  confirmed: z.record(z.string(), z.boolean()).optional(),
+  note: z.string().max(500).optional(),
+})
+
+export const measurementValidationSchema = z.object({
+  measurementSetId: z.string().min(1),
+  status: z.enum(["pending", "approved", "needs_correction"]),
+  corrections: z.record(z.string(), z.string()).default({}),
+  comment: z.string().max(500).default(""),
+})
