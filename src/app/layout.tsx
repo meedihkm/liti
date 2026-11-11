@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, Cairo } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { HashRouteMigrator } from "@/components/routing/hash-route-migrator";
+// import { HashRouteMigrator } from "@/components/routing/hash-route-migrator"; // Désactivé : conflit avec hash router de AppShell
 import { ServiceWorkerRegister as SWRegister } from "@/components/pwa/sw-register";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
 
@@ -109,7 +109,7 @@ export default function RootLayout({
       <body
         className={`${display.variable} ${body.variable} ${arabic.variable} font-sans antialiased bg-background text-foreground`}
       >
-        <HashRouteMigrator />
+        {/* <HashRouteMigrator /> Désactivé : conflit avec hash router */}
         <SWRegister />
         <InstallPrompt />
         {children}
