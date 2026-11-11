@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { orderCreateSchema, contactSchema, measurementsSchema } from './validators'
+import { orderCreateSchema, contactSchema, measurementSchema } from './validators'
 
 describe('orderCreateSchema', () => {
   it('valide une commande complète', () => {
