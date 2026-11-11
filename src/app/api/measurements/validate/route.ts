@@ -12,9 +12,12 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    await rateGuard(req, "measurements", RATE_LIMITS.default);
+    const rateLimitResponse = rateGuard(req, "measurements", RATE_LIMITS.default);
+    if (rateLimitResponse) return rateLimitResponse;
 
-    const body = await parseBody(req, measurementValuesSchema);
+    const bodyResult = await parseBody(req, measurementValuesSchema);
+    if ("response" in bodyResult) return bodyResult.response;
+    const body = bodyResult.data;
 
     // Vérifier cohérence
     const alerts = checkCoherence(body, "fr");

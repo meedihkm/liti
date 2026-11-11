@@ -12,7 +12,8 @@ export const dynamic = "force-dynamic";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    await rateGuard(req, "measurements", RATE_LIMITS.default);
+    const rateLimitResponse = rateGuard(req, "measurements", RATE_LIMITS.default);
+    if (rateLimitResponse) return rateLimitResponse;
 
     const { id } = await params;
     const body = await req.json();
@@ -50,7 +51,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    await rateGuard(req, "measurements", RATE_LIMITS.default);
+    const rateLimitResponse = rateGuard(req, "measurements", RATE_LIMITS.default);
+    if (rateLimitResponse) return rateLimitResponse;
 
     const { id } = await params;
     const sessionId = req.cookies.get("rk_measurement_session")?.value || "";
