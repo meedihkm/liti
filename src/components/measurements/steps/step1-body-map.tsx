@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { BodySilhouette } from "../ui/body-silhouette";
 import { TapeAnimation } from "../ui/tape-animation";
 import { ProgressRing } from "../ui/progress-ring";

@@ -4,7 +4,7 @@
 // Animation mètre ruban qui s'enroule autour d'une zone
 // ─────────────────────────────────────────────────────────────
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import type { MeasurementKey } from "@/lib/constants";
 
 interface TapeAnimationProps {

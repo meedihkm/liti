@@ -1,13 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth-admin";
+import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/api";
 
 // GET /api/admin/measurements/profiles — liste tous les profils
 export async function GET(req: NextRequest) {
   try {
-    await requireAdmin(req);
+    const auth = await requireAdmin(["admin"]);
+    if ("response" in auth) return auth.response;
 
-    const profiles = await prisma.measurementProfile.findMany({
+    const profiles = await db.measurementProfile.findMany({
       orderBy: { createdAt: "desc" },
       include: {
         _count: {

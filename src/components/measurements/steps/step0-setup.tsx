@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import type { MeasurementMethod, MeasurementFit, MeasurementUnit } from "@/lib/measurements/types";
 
 interface Step0SetupProps {

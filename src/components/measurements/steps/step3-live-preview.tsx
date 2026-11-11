@@ -4,7 +4,7 @@
 // Étape 3 : Silhouette vivante (preview temps réel)
 // ─────────────────────────────────────────────────────────────
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { BodySilhouette } from "../ui/body-silhouette";
 import { interpolateSilhouette } from "@/lib/measurements/interpolation";
 import type { MeasurementValues } from "@/lib/measurements/types";

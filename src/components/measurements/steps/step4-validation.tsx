@@ -4,7 +4,7 @@
 // Étape 4 : Contrôles de cohérence
 // ─────────────────────────────────────────────────────────────
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useCoherenceCheck } from "../hooks/use-coherence-check";
 import type { MeasurementValues, MeasurementKey } from "@/lib/measurements/types";
 

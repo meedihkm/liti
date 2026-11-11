@@ -4,7 +4,7 @@
 // Anneau de progression
 // ─────────────────────────────────────────────────────────────
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 interface ProgressRingProps {
   current: number;

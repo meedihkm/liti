@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { MeasurementRuler } from "../ui/measurement-ruler";
 import { TapeAnimation } from "../ui/tape-animation";
 import { MEASUREMENT_FIELDS, type MeasurementKey } from "@/lib/constants";

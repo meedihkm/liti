@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth-admin";
+import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/api";
 
 // POST /api/admin/measurements/profiles/[id]/validate — valider/rejeter un profil
 export async function POST(
@@ -8,7 +8,10 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const admin = await requireAdmin(req);
+    const auth = await requireAdmin(["admin"]);
+    if ("response" in auth) return auth.response;
+    
+    const adminEmail = auth.user.email;
     const body = await req.json();
 
     const { status, comment } = body as {
@@ -24,10 +27,10 @@ export async function POST(
     }
 
     // Créer la validation
-    const validation = await prisma.measurementValidation.create({
+    const validation = await db.measurementValidation.create({
       data: {
         profileId: params.id,
-        validatedBy: admin.email,
+        validatedBy: adminEmail,
         status,
         comment: comment || null,
       },
@@ -35,7 +38,7 @@ export async function POST(
 
     // Mettre à jour le statut du profil
     if (status === "approved") {
-      await prisma.measurementProfile.update({
+      await db.measurementProfile.update({
         where: { id: params.id },
         data: { isValidated: true },
       });

@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useRef, useEffect } from "react";
-import { motion, useMotionValue, useTransform, PanInfo } from "motion/react";
+import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { MEASUREMENT_CONFIG } from "@/lib/measurements/rules";
 
 interface MeasurementRulerProps {

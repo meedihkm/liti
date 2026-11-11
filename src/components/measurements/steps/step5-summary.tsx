@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { BodySilhouette } from "../ui/body-silhouette";
 import { MEASUREMENT_FIELDS } from "@/lib/constants";
 import type { MeasurementValues, MeasurementFit, MeasurementUnit } from "@/lib/measurements/types";

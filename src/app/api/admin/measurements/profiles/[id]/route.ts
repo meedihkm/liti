@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth-admin";
+import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/api";
 
 // GET /api/admin/measurements/profiles/[id] — détails d'un profil
 export async function GET(
@@ -8,9 +8,10 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    await requireAdmin(req);
+    const auth = await requireAdmin(["admin"]);
+    if ("response" in auth) return auth.response;
 
-    const profile = await prisma.measurementProfile.findUnique({
+    const profile = await db.measurementProfile.findUnique({
       where: { id: params.id },
       include: {
         measurements: {
