@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { db } from '@/lib/db';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
