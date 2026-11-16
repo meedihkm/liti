@@ -34,6 +34,10 @@ export async function getSettings(): Promise<PublicSettings & { adminEmail: stri
   try {
     const rows = await db.siteSetting.findMany()
     for (const row of rows) {
+      // Skip siteName, siteNameAr, email, adminEmail - always use defaults (Borboleta branding)
+      if (row.key === 'siteName' || row.key === 'siteNameAr' || row.key === 'email' || row.key === 'adminEmail') {
+        continue;
+      }
       if (row.key in merged) {
         const value = row.value
         // assignment dynamique contrôlée par les clés connues

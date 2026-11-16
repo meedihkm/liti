@@ -148,14 +148,28 @@ export function AdminApp() {
     }
   } catch (error) {
     console.error("[AdminApp] Error rendering view:", error)
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : '';
     view = (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-500 font-semibold mb-2">Erreur de rendu</p>
-          <p className="text-sm text-muted-foreground">{String(error)}</p>
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <div className="max-w-2xl w-full text-center space-y-4">
+          <p className="text-red-500 font-semibold text-lg">Erreur de rendu du dashboard</p>
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-left">
+            <p className="font-mono text-sm text-red-700 dark:text-red-300">{errorMessage}</p>
+            {errorStack && (
+              <pre className="mt-2 text-xs text-red-600 dark:text-red-400 overflow-auto max-h-40">
+                {errorStack}
+              </pre>
+            )}
+          </div>
+          <div className="text-sm text-muted-foreground space-y-2">
+            <p>Section: {section}</p>
+            <p>User: {user.email}</p>
+            <p>Lang: {lang}</p>
+          </div>
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-gold text-white rounded"
+            className="mt-4 px-6 py-3 bg-gold text-white rounded-lg hover:bg-gold-strong"
           >
             Recharger la page
           </button>
