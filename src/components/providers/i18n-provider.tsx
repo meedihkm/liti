@@ -15,7 +15,7 @@ import { translate, pickLocalized, dirOf, type Lang, type Dir } from "@/i18n";
 // Source de vérité = <html lang> (posée côté serveur « fr »,
 // ajustée avant peinture par le script inline si mémorisée).
 // Abonnement via mini store externe — pas d'effet, pas de flash.
-// Prêt pour « kab » : ajouter le dictionnaire (voir src/i18n).
+// Supporte FR (français) et AR (arabe) uniquement.
 // ─────────────────────────────────────────────────────────────
 
 const listeners = new Set<() => void>();
@@ -28,8 +28,7 @@ function subscribeLang(callback: () => void) {
 function getLangSnapshot(): Lang {
   const htmlLang = document.documentElement.lang;
   if (htmlLang === "ar") return "ar";
-  if (htmlLang === "kab") return "kab";
-  return "fr";
+  return "fr"; // Only FR and AR supported
 }
 
 function setLangValue(next: Lang) {

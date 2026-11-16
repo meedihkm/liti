@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────
 // i18n — noyau : fusion des dictionnaires par domaine + t()
-// Langues : fr (défaut), ar (RTL), kab (tamazight/kabyle)
+// Langues : fr (défaut), ar (RTL)
 // ─────────────────────────────────────────────────────────────
 import { common } from "./dict/common"
 import { home } from "./dict/home"
@@ -10,13 +10,12 @@ import { checkout } from "./dict/checkout"
 import { pages } from "./dict/pages"
 import { admin } from "./dict/admin"
 
-export type Lang = "fr" | "ar" | "kab"
+export type Lang = "fr" | "ar"
 export type Dir = "ltr" | "rtl"
 
 export const LANGS: { code: Lang; label: string; dir: Dir }[] = [
   { code: "fr", label: "Français", dir: "ltr" },
   { code: "ar", label: "العربية", dir: "rtl" },
-  { code: "kab", label: "Taqbaylit", dir: "ltr" },
 ]
 
 export function dirOf(lang: Lang): Dir {

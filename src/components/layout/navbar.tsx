@@ -103,18 +103,35 @@ export function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-1.5">
-          <button
-            onClick={() => {
-              const next = lang === "fr" ? "ar" : lang === "ar" ? "kab" : "fr";
-              setLang(next);
-            }}
-            className="flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-foreground/80 transition-colors hover:text-gold"
-            aria-label={t("common.lang.switch")}
-            title={t("common.lang.switch")}
-          >
-            <Languages className="h-4 w-4" />
-            <span>{lang === "fr" ? "AR" : lang === "ar" ? "KAB" : "FR"}</span>
-          </button>
+          <div className="relative group">
+            <button
+              className="flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-foreground/80 transition-colors hover:text-gold"
+              aria-label={t("common.lang.switch")}
+            >
+              <Languages className="h-4 w-4" />
+              <span className="uppercase">{lang}</span>
+            </button>
+            <div className="absolute right-0 top-full mt-1 hidden min-w-[100px] rounded-lg border bg-popover p-1 shadow-lg group-hover:block">
+              <button
+                onClick={() => setLang("fr")}
+                className={cn(
+                  "w-full rounded px-3 py-2 text-left text-sm transition-colors hover:bg-accent",
+                  lang === "fr" && "bg-accent font-semibold text-gold"
+                )}
+              >
+                Français
+              </button>
+              <button
+                onClick={() => setLang("ar")}
+                className={cn(
+                  "w-full rounded px-3 py-2 text-left text-sm transition-colors hover:bg-accent",
+                  lang === "ar" && "bg-accent font-semibold text-gold"
+                )}
+              >
+                العربية
+              </button>
+            </div>
+          </div>
 
           <button
             onClick={toggle}

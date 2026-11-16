@@ -35,7 +35,7 @@ import {
 import type { AdminStatsDTO, AdminUserDTO } from "@/lib/types";
 
 /** Date courte selon la langue (client-only : rendu après fetch) */
-function formatDate(iso: string, lang: "fr" | "ar" | "kab"): string {
+function formatDate(iso: string, lang: "fr" | "ar"): string {
   const locale = lang === "ar" ? "ar-DZ" : "fr-FR";
   return new Intl.DateTimeFormat(locale, {
     day: "2-digit",

@@ -112,7 +112,7 @@ function parseMeasurements(json: string): Record<string, number> {
   return {}
 }
 
-function formatDateTime(iso: string, lang: "fr" | "ar" | "kab"): string {
+function formatDateTime(iso: string, lang: "fr" | "ar"): string {
   const locale = lang === "ar" ? "ar-DZ" : "fr-FR";
   return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
@@ -123,9 +123,8 @@ function formatDateTime(iso: string, lang: "fr" | "ar" | "kab"): string {
   }).format(new Date(iso))
 }
 
-function lengthLabel(value: string, lang: "fr" | "ar" | "kab"): string {
+function lengthLabel(value: string, lang: "fr" | "ar"): string {
   const l = LENGTHS.find((x) => x.value === value)
-  // kab uses fr labels
   return l ? (lang === "ar" ? l.ar : l.fr) : value
 }
 
