@@ -230,19 +230,19 @@ export function AdminApp() {
 
         {/* Navigation horizontale (mobile) */}
         <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t bg-background/95 py-1.5 backdrop-blur md:hidden" style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }} aria-label={t("admin.shell.title")}>
-          {navItems.slice(0, 5).map((n) => {
+          {navItems.map((n) => {
             const active = n.match(sub)
             return (
               <button
                 key={n.section || "dashboard"}
                 onClick={() => navigate(`/admin/${n.section}`)}
                 className={cn(
-                  "flex min-w-14 flex-col items-center gap-1 rounded-lg px-2 py-1.5 text-[10px] font-medium",
+                  "flex min-w-12 flex-col items-center gap-1 rounded-lg px-1.5 py-1.5 text-[10px] font-medium",
                   active ? "text-gold" : "text-muted-foreground"
                 )}
               >
                 <n.icon className="h-5 w-5" />
-                <span className="truncate">{t(n.labelKey).split(" ")[0]}</span>
+                <span className="truncate max-w-[3.5rem]">{t(n.labelKey).split(" ")[0]}</span>
               </button>
             )
           })}
