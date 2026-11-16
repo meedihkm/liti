@@ -1,7 +1,7 @@
 // Service Worker — PWA Borboleta
 // Stratégies de cache simples sans bibliothèque externe
 
-const CACHE_VERSION = "v2"; // Incrémenter à chaque changement de code
+const CACHE_VERSION = "v3"; // Incrémenter à chaque changement de code
 const SHELL_CACHE = `shell-${CACHE_VERSION}`;
 const ASSETS_CACHE = `assets-${CACHE_VERSION}`;
 const API_CACHE = `api-${CACHE_VERSION}`;
@@ -14,6 +14,10 @@ const SHELL_FILES = [
   "/",
   "/manifest.webmanifest",
   "/favicon.svg",
+  "/icon-192.png",
+  "/icon-512.png",
+  "/icon-512-maskable.png",
+  "/apple-touch-icon.png",
 ];
 
 // Installation : précache du shell
