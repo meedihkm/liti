@@ -1,0 +1,9 @@
+📌 ACTION REQUISE
+
+Placez votre logo Borboleta ici avec le nom exact :
+logo-borboleta.png
+
+L'image doit être au format PNG avec fond transparent de préférence.
+Dimensions recommandées : 200x200px minimum
+
+Une fois l'image ajoutée, supprimez ce fichier.

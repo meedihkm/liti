@@ -70,9 +70,11 @@ export function Navbar() {
           }}
           className="group flex min-h-11 items-center gap-2.5"
         >
-          <span className="text-gold transition-transform duration-300 group-hover:rotate-45">
-            <YazMark className="h-8 w-8" />
-          </span>
+          <img 
+            src="/images/logo-borboleta.png" 
+            alt="Borboleta" 
+            className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-110"
+          />
           <span className="font-display text-lg font-semibold tracking-tight">
             {siteName.split("—")[0].trim()}
           </span>
