@@ -38,8 +38,8 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   title: {
-    default: "Taqendurt — Robes kabyles traditionnelles & modernes | Algérie",
-    template: "%s | Taqendurt",
+    default: "Borboleta — Robes kabyles traditionnelles & modernes | Algérie",
+    template: "%s | Borboleta",
   },
   description:
     "Boutique de robes kabyles traditionnelles et modernes : robe kabyle, karakou, gandoura, tenues de mariage. Sur-mesure, broderie artisanale, livraison dans les 58 wilayas. Paiement à la livraison.",
@@ -53,25 +53,25 @@ export const metadata: Metadata = {
     "tenue traditionnelle",
     "فساتين قبائلية",
   ],
-  authors: [{ name: "Taqendurt" }],
-  applicationName: "Taqendurt",
+  authors: [{ name: "Borboleta" }],
+  applicationName: "Borboleta",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Taqendurt",
+    title: "Borboleta",
   },
   openGraph: {
     type: "website",
     locale: "fr_DZ",
-    siteName: "Taqendurt",
-    title: "Taqendurt — Robes kabyles confectionnées pour vous",
+    siteName: "Borboleta",
+    title: "Borboleta — Robes kabyles confectionnées pour vous",
     description:
       "Robes kabyles traditionnelles et modernes, sur-mesure, broderie artisanale. Livraison 58 wilayas, paiement à la livraison.",
-    images: [{ url: "/images/og-cover.jpg", width: 1344, height: 768, alt: "Robe kabyle Taqendurt" }],
+    images: [{ url: "/images/og-cover.jpg", width: 1344, height: 768, alt: "Robe kabyle Borboleta" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Taqendurt — Robes kabyles",
+    title: "Borboleta — Robes kabyles",
     description: "Sur-mesure, broderie artisanale, livraison 58 wilayas.",
     images: ["/images/og-cover.jpg"],
   },

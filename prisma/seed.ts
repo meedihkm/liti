@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// Seed Taqendurt — données de démonstration
+// Seed Borboleta — données de démonstration
 // Exécution : `bun prisma/seed.ts` (script npm : db:seed)
 // Idempotent : wipe complet puis insertion.
 // ─────────────────────────────────────────────────────────────
@@ -15,7 +15,7 @@ const daysAgo = (d: number) => new Date(now - d * DAY)
 /** Corps du seed — appelé par le CLI (`bun prisma/seed.ts`) OU par
  *  l'auto-seed serveur (src/lib/auto-seed.ts) si la base est vide. */
 export async function runSeed() {
-  console.log("🌱 Seed Taqendurt — wipe complet…")
+  console.log("🌱 Seed Borboleta — wipe complet…")
 
   // Ordre des dépendances : enfants d'abord
   await db.mailLog.deleteMany()
@@ -40,7 +40,7 @@ export async function runSeed() {
   // ── Comptes ────────────────────────────────────────────────
   await db.user.create({
     data: {
-      email: "admin@taqendurt.dz",
+      email: "admin@borboleta.dz",
       name: "Amina Admin",
       role: "admin",
       passwordHash: await hashPassword("Admin!2026"),
@@ -48,13 +48,13 @@ export async function runSeed() {
   })
   await db.user.create({
     data: {
-      email: "staff@taqendurt.dz",
+      email: "staff@borboleta.dz",
       name: "Karim Employé",
       role: "staff",
       passwordHash: await hashPassword("Staff!2026"),
     },
   })
-  console.log("✓ Comptes : admin@taqendurt.dz / staff@taqendurt.dz")
+  console.log("✓ Comptes : admin@borboleta.dz / staff@borboleta.dz")
 
   // ── Catégories ─────────────────────────────────────────────
   const catRobes = await db.category.create({

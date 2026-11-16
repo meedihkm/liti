@@ -149,7 +149,7 @@ export function AdminApp() {
               <YazMark className="h-7 w-7" />
             </span>
             <span className="font-display text-sm font-semibold">
-              {t("admin.shell.title")} — Taqendurt
+              {t("admin.shell.title")} — Borboleta
             </span>
           </div>
           <div className="flex items-center gap-1">

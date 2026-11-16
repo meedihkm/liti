@@ -134,7 +134,7 @@ function CurrentView() {
   useEffect(() => {
     scrollTop(true)
     const titles: Record<string, string> = {
-      "/": "Taqendurt — Robes kabyles",
+      "/": "Borboleta — Robes kabyles",
       "/catalog": t("catalog.title"),
       "/cart": t("checkout.cart.title"),
       "/checkout": t("checkout.form.title"),
@@ -148,7 +148,7 @@ function CurrentView() {
     if (!title && segments[0] === "product") title = t("catalog.title")
     if (!title && segments[0] === "legal") title = segments[1]
     if (!title && segments[0] === "confirmation") title = t("checkout.confirmation.title")
-    document.title = title ? `${title} | Taqendurt` : "Taqendurt"
+    document.title = title ? `${title} | Borboleta` : "Borboleta"
   }, [path, segments, t])
 
   let view: ReactNode

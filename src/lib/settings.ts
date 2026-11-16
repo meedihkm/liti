@@ -5,18 +5,18 @@ import { db } from "@/lib/db"
 import type { PublicSettings } from "./types"
 
 export const DEFAULT_SETTINGS: PublicSettings & { adminEmail: string } = {
-  siteName: "Taqendurt — Robes Kabyles",
-  siteNameAr: "تاقندورث — أزياء قبائلية",
+  siteName: "Borboleta — Robes Kabyles",
+  siteNameAr: "بوربوليتا — أزياء قبائلية",
   tagline: "L'élégance amazigh, confectionnée pour vous",
   taglineAr: "أناقة أمازيغية تُخاط لأجلك",
   phone: "+213 550 12 34 56",
   whatsapp: "213550123456",
-  email: "contact@taqendurt.dz",
+  email: "contact@borboleta.dz",
   address: "Rue des Artisans, Tizi-Ouzou 15000, Algérie",
   addressAr: "شارع الصناع التقليديين، تيزي وزو 15000، الجزائر",
-  instagram: "https://instagram.com/taqendurt",
-  facebook: "https://facebook.com/taqendurt",
-  tiktok: "https://tiktok.com/@taqendurt",
+  instagram: "https://instagram.com/borboleta",
+  facebook: "https://facebook.com/borboleta",
+  tiktok: "https://tiktok.com/@borboleta",
   heroTitle: "L'âme kabyle, taillée dans l'étoffe",
   heroTitleAr: "الروح القبائلية تُنسج من القماش",
   heroSubtitle:
@@ -26,7 +26,7 @@ export const DEFAULT_SETTINGS: PublicSettings & { adminEmail: string } = {
   bannerText: "✨ Livraison dans les 58 wilayas — Sur-mesure offert pour toute commande de mariage",
   bannerTextAr: "✨ توصيل إلى 58 ولاية — الخياطة حسب القياس مجانية لطلبات الزفاف",
   bannerEnabled: true,
-  adminEmail: "admin@taqendurt.dz",
+  adminEmail: "admin@borboleta.dz",
 }
 
 export async function getSettings(): Promise<PublicSettings & { adminEmail: string }> {

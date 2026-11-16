@@ -7,12 +7,12 @@ export const adminOrders = {
   fr: {
     login: {
       title: "Back-office",
-      subtitle: "Espace réservé à l'équipe Taqendurt",
+      subtitle: "Espace réservé à l'équipe Borboleta",
       emailLabel: "Adresse email",
       passwordLabel: "Mot de passe",
       submit: "Se connecter",
       failed: "Connexion impossible, réessayez.",
-      demoHint: "Démo — admin@taqendurt.dz / Admin!2026",
+      demoHint: "Démo — admin@borboleta.dz / Admin!2026",
       backToSite: "Retour à la boutique",
     },
     dash: {
@@ -140,7 +140,7 @@ export const adminOrders = {
       editInvalid: "Vérifiez les champs : nom (3 caractères min.), téléphone algérien valide, quantités entre 1 et 10.",
       // ── Détail : contact & impression ────────────────────────
       whatsapp: "Contacter sur WhatsApp",
-      whatsappMessage: "Bonjour {name}, je vous contacte de l'atelier Taqendurt au sujet de votre commande {number}.",
+      whatsappMessage: "Bonjour {name}, je vous contacte de l'atelier Borboleta au sujet de votre commande {number}.",
       print: "Imprimer la fiche atelier",
       statusUpdated: "Statut mis à jour",
       noteSaved: "Note enregistrée",

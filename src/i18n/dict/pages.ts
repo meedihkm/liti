@@ -149,18 +149,18 @@ const fr: PagesDict = {
       titleA: "Trois générations,",
       titleB: "un même fil",
       subtitle:
-        "Taqendurt confectionne des robes kabyles à la main, héritières d'un savoir-faire transmis de grand-mère en petite-fille. Bienvenue dans notre atelier.",
+        "Borboleta confectionne des robes kabyles à la main, héritières d'un savoir-faire transmis de grand-mère en petite-fille. Bienvenue dans notre atelier.",
     },
     story: {
       kicker: "Notre histoire",
       title: "Tout a commencé rue des Artisans",
       paragraphs: [
-        "Taqendurt est née en 2012, dans une petite pièce baignée de lumière rue des Artisans, à Tizi-Ouzou. Amina, alors jeune couturière formée auprès de sa mère, y cousait ses premières robes kabyles pour les voisines du quartier. Les commandes passaient de bouche à oreille : une robe de fiançailles ici, un karakou de cérémonie là. Très vite, la petite pièce n'a plus suffi.",
+        "Borboleta est née en 2012, dans une petite pièce baignée de lumière rue des Artisans, à Tizi-Ouzou. Amina, alors jeune couturière formée auprès de sa mère, y cousait ses premières robes kabyles pour les voisines du quartier. Les commandes passaient de bouche à oreille : une robe de fiançailles ici, un karakou de cérémonie là. Très vite, la petite pièce n'a plus suffi.",
         "Le savoir-faire de la maison remonte bien plus loin que 2012. C'est de sa grand-mère, couturière réputée de son village, qu'Amina tient ses gestes : le point de ruche des broderies kabyles, le montage délicat du velours, l'art de marier le fil d'or et la soie. Trois générations se sont ainsi transmis le même amour du détail — et quand la mère d'Amina a rejoint l'aventure, la boucle s'est refermée, naturellement.",
         "Aujourd'hui, l'atelier réunit une douzaine d'artisanes qui coupent, brodent et assemblent chaque pièce à la main. Nous habillons des clientes dans les 58 wilayas, de la robe du quotidien au fourreau de mariage. Une chose n'a pas changé : chaque robe qui quitte l'atelier emporte avec elle la patience des mains, l'odeur du tissu tendu et la fierté d'un métier qui se transmet.",
       ],
       imageAlt:
-        "Mains d'une artisane brodant une robe kabyle au fil d'or dans l'atelier Taqendurt",
+        "Mains d'une artisane brodant une robe kabyle au fil d'or dans l'atelier Borboleta",
       imageCaption: "L'atelier, rue des Artisans — un après-midi de broderie.",
       badgeTitle: "Depuis 2012",
       badgeText: "Tizi-Ouzou, Kabylie",
@@ -201,7 +201,7 @@ const fr: PagesDict = {
         },
         {
           title: "La qualité d'abord",
-          text: "Velours, satins et mousselines sélectionnés auprès de fournisseurs de confiance, contrôlés couleur par couleur. Une robe Taqendurt se porte des années — et se transmet.",
+          text: "Velours, satins et mousselines sélectionnés auprès de fournisseurs de confiance, contrôlés couleur par couleur. Une robe Borboleta se porte des années — et se transmet.",
         },
       ],
     },
@@ -384,7 +384,7 @@ const fr: PagesDict = {
       sections: [
         {
           h: "1. Objet et acceptation",
-          p: "Les présentes conditions générales de vente régissent les ventes de robes et d'accessoires confectionnés par l'atelier Taqendurt, Rue des Artisans, Tizi-Ouzou 15000 (Algérie). Toute commande passée sur ce site implique l'acceptation sans réserve des présentes conditions, ainsi que de notre politique d'échange et de confidentialité.",
+          p: "Les présentes conditions générales de vente régissent les ventes de robes et d'accessoires confectionnés par l'atelier Borboleta, Rue des Artisans, Tizi-Ouzou 15000 (Algérie). Toute commande passée sur ce site implique l'acceptation sans réserve des présentes conditions, ainsi que de notre politique d'échange et de confidentialité.",
         },
         {
           h: "2. Commande et validation téléphonique",
@@ -412,7 +412,7 @@ const fr: PagesDict = {
         },
         {
           h: "8. Propriété des créations",
-          p: "Les modèles, motifs et broderies présentés sur ce site sont des créations originales de l'atelier Taqendurt. Toute reproduction, même partielle, des visuels, broderies et créations — par quelque procédé que ce soit — est interdite sans notre autorisation écrite préalable.",
+          p: "Les modèles, motifs et broderies présentés sur ce site sont des créations originales de l'atelier Borboleta. Toute reproduction, même partielle, des visuels, broderies et créations — par quelque procédé que ce soit — est interdite sans notre autorisation écrite préalable.",
         },
       ],
     },
@@ -446,7 +446,7 @@ const fr: PagesDict = {
       sections: [
         {
           h: "1. Responsable du traitement",
-          p: "Le responsable du traitement des données est l'atelier Taqendurt, Rue des Artisans, Tizi-Ouzou 15000, Algérie, joignable à l'adresse contact@taqendurt.dz.",
+          p: "Le responsable du traitement des données est l'atelier Borboleta, Rue des Artisans, Tizi-Ouzou 15000, Algérie, joignable à l'adresse contact@borboleta.dz.",
         },
         {
           h: "2. Données collectées",
@@ -466,7 +466,7 @@ const fr: PagesDict = {
         },
         {
           h: "6. Vos droits",
-          p: "Vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Une simple demande par email à contact@taqendurt.dz suffit ; nous y répondons dans un délai maximum de 30 jours.",
+          p: "Vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Une simple demande par email à contact@borboleta.dz suffit ; nous y répondons dans un délai maximum de 30 jours.",
         },
       ],
     },
@@ -776,7 +776,7 @@ const ar: PagesDict = {
       sections: [
         {
           h: "1. المسؤول عن المعالجة",
-          p: "المسؤول عن معالجة البيانات هو ورشة «تاقندورث»، شارع الصناع التقليديين، تيزي وزو 15000، الجزائر، ويمكن التواصل معه عبر العنوان contact@taqendurt.dz.",
+          p: "المسؤول عن معالجة البيانات هو ورشة «بوربوليتا»، شارع الصناع التقليديين، تيزي وزو 15000، الجزائر، ويمكن التواصل معه عبر العنوان contact@borboleta.dz.",
         },
         {
           h: "2. البيانات المجمَّعة",
@@ -796,7 +796,7 @@ const ar: PagesDict = {
         },
         {
           h: "6. حقوقك",
-          p: "لك حق الوصول إلى بياناتك وتصحيحها وحذفها. يكفي طلب بسيط عبر البريد الإلكتروني إلى contact@taqendurt.dz، ونردّ خلال 30 يوماً كأقصى تقدير.",
+          p: "لك حق الوصول إلى بياناتك وتصحيحها وحذفها. يكفي طلب بسيط عبر البريد الإلكتروني إلى contact@borboleta.dz، ونردّ خلال 30 يوماً كأقصى تقدير.",
         },
       ],
     },
