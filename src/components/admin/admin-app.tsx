@@ -163,21 +163,6 @@ export function AdminApp() {
       </div>
     )
   }
-    case "measurements":
-      view = <MeasurementsView />
-      break
-    case "shipping":
-      view = <ShippingView />
-      break
-    case "messages":
-      view = <MessagesView />
-      break
-    case "settings":
-      view = <SettingsView user={user} />
-      break
-    default:
-      view = <DashboardView user={user} />
-  }
 
   const navItems = NAV.filter((n) => !n.adminOnly || user.role === "admin")
 
