@@ -182,14 +182,14 @@ export function AdminApp() {
           <div className="flex items-center gap-1">
             <button
               onClick={() => {
-                const next = lang === "fr" ? "ar" : lang === "ar" ? "kab" : "fr";
+                const next = lang === "fr" ? "ar" : "fr";
                 setLang(next);
               }}
               className="flex h-10 items-center gap-1.5 rounded-lg px-3 text-xs font-medium text-muted-foreground hover:text-gold"
               aria-label={t("common.lang.switch")}
             >
               <Languages className="h-4 w-4" />
-              {lang === "fr" ? "AR" : lang === "ar" ? "KAB" : "FR"}
+              {lang === "ar" ? "FR" : "AR"}
             </button>
             <button
               onClick={toggle}

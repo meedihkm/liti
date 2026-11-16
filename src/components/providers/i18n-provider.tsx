@@ -27,8 +27,9 @@ function subscribeLang(callback: () => void) {
 
 function getLangSnapshot(): Lang {
   const htmlLang = document.documentElement.lang;
+  // Only FR and AR are supported - force FR for any other value
   if (htmlLang === "ar") return "ar";
-  return "fr"; // Only FR and AR supported
+  return "fr";
 }
 
 function setLangValue(next: Lang) {
