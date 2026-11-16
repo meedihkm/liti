@@ -37,7 +37,14 @@ export function AdminLogin({ onLogin }: { onLogin: (user: AdminUserDTO) => void 
       // Token de secours pour les iframes/previews (cookies tiers bloqués) :
       // renvoyé via Authorization à chaque appel par api-client.
       setSessionToken(data.token ?? null);
+      
+      // Appel onLogin qui met à jour le state dans AdminApp
       onLogin(data.user);
+      
+      // Force navigation vers /admin après login réussi
+      setTimeout(() => {
+        navigate("/admin");
+      }, 100);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("admin.login.failed"));
     } finally {

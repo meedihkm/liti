@@ -56,6 +56,7 @@ const SETTING_KEYS = [
   "bannerText",
   "bannerTextAr",
   "adminEmail",
+  "theme_background",
 ] as const;
 
 type SettingsForm = Record<(typeof SETTING_KEYS)[number], string>;
@@ -476,6 +477,71 @@ export function SettingsView({ user }: { user: AdminUserDTO }) {
               aria-label={s("fBannerEnabled")}
               className="scale-110 data-[state=checked]:bg-gold"
             />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Apparence / Thème */}
+      <Card>
+        <CardHeader className="pb-0">
+          <CardTitle className="text-base">{s("secAppearance") || "Apparence du site"}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label>{s("fThemeBackground") || "Fond des pages"}</Label>
+            <p className="text-xs text-muted-foreground">
+              {s("fThemeBackgroundHint") || "Choisissez la palette de couleurs pour le fond des pages clients"}
+            </p>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {[
+                { value: "default", label: "Par défaut", from: "from-background", to: "to-accent/20" },
+                { value: "warm", label: "Chaleureux", from: "from-orange-50", to: "to-rose-50" },
+                { value: "cool", label: "Frais", from: "from-blue-50", to: "to-cyan-50" },
+                { value: "elegant", label: "Élégant", from: "from-purple-50", to: "to-pink-50" },
+                { value: "nature", label: "Nature", from: "from-green-50", to: "to-emerald-50" },
+                { value: "sunset", label: "Crépuscule", from: "from-amber-50", to: "to-orange-100" },
+                { value: "ocean", label: "Océan", from: "from-teal-50", to: "to-blue-100" },
+                { value: "minimal", label: "Minimal", from: "from-gray-50", to: "to-slate-50" },
+              ].map((theme) => {
+                const isSelected = (form.theme_background || "default") === theme.value;
+                return (
+                  <button
+                    key={theme.value}
+                    type="button"
+                    onClick={() => patch("theme_background", theme.value)}
+                    className={cn(
+                      "group relative overflow-hidden rounded-xl border-2 p-4 transition-all",
+                      isSelected
+                        ? "border-gold shadow-lg shadow-gold/20 scale-105"
+                        : "border-border hover:border-gold/40 hover:scale-102"
+                    )}
+                  >
+                    <div className={cn(
+                      "absolute inset-0 bg-gradient-to-br opacity-60",
+                      theme.from,
+                      theme.to
+                    )} />
+                    <div className="relative space-y-2">
+                      <div className="flex h-8 items-center justify-center">
+                        {isSelected && (
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gold">
+                            <svg className="h-4 w-4 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                      <p className={cn(
+                        "text-xs font-semibold transition-colors",
+                        isSelected ? "text-gold" : "text-foreground group-hover:text-gold"
+                      )}>
+                        {theme.label}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </CardContent>
       </Card>

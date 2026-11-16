@@ -13,6 +13,7 @@ import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import { CustomCursor } from "@/components/layout/custom-cursor";
 import { SplashScreen } from "@/components/layout/splash-screen";
+import { ThemeBackground } from "@/components/layout/theme-background";
 import { YazMark } from "@/components/layout/berber-divider";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
 import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
@@ -215,6 +216,7 @@ function Shell() {
   const isAdmin = path.startsWith("/admin")
   return (
     <div className="flex min-h-screen flex-col">
+      <ThemeBackground />
       <SplashScreen />
       <CustomCursor />
       <ServiceWorkerRegister />
