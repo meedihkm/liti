@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { api } from "@/lib/api-client";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { usePublicData } from "@/components/providers/public-data-provider";
+import { cn } from "@/lib/utils";
 import type { AdminUserDTO } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import {
