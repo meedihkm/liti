@@ -26,7 +26,10 @@ function subscribeLang(callback: () => void) {
 }
 
 function getLangSnapshot(): Lang {
-  return document.documentElement.lang === "ar" ? "ar" : "fr";
+  const htmlLang = document.documentElement.lang;
+  if (htmlLang === "ar") return "ar";
+  if (htmlLang === "kab") return "kab";
+  return "fr";
 }
 
 function setLangValue(next: Lang) {

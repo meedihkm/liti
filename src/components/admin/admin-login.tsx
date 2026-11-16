@@ -41,10 +41,7 @@ export function AdminLogin({ onLogin }: { onLogin: (user: AdminUserDTO) => void 
       // Appel onLogin qui met à jour le state dans AdminApp
       onLogin(data.user);
       
-      // Force navigation vers /admin après login réussi
-      setTimeout(() => {
-        navigate("/admin");
-      }, 100);
+      // PAS de navigation manuelle - laisse AdminApp gérer l'affichage
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("admin.login.failed"));
     } finally {
