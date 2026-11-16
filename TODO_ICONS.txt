@@ -1,0 +1,58 @@
+═══════════════════════════════════════════════════════════════
+  🎨 ACTION REQUISE: Régénérer les Icônes de l'Application
+═══════════════════════════════════════════════════════════════
+
+PROBLÈME:
+  L'icône de l'app installée affiche encore l'ancienne version
+
+CAUSE:
+  Les fichiers PNG (icon-192.png, icon-512.png, etc.) n'ont pas
+  été régénérés à partir du nouveau logo SVG
+
+SOLUTION:
+  
+  1. OUVRIR ce site: https://svgtopng.com/
+  
+  2. UPLOADER le fichier: public/favicon.svg
+  
+  3. CONVERTIR aux tailles suivantes et TÉLÉCHARGER:
+  
+     ┌─────────────────────────────────────────────────────────┐
+     │ Fichier                  │ Taille    │ Padding           │
+     ├─────────────────────────────────────────────────────────┤
+     │ icon-192.png            │ 192×192   │ Aucun             │
+     │ icon-512.png            │ 512×512   │ Aucun             │
+     │ icon-512-maskable.png   │ 512×512   │ 10% (#0e0d0b)     │
+     │ apple-touch-icon.png    │ 180×180   │ Aucun             │
+     └─────────────────────────────────────────────────────────┘
+  
+  4. REMPLACER les 4 fichiers dans le dossier: public/
+  
+  5. COMMIT et PUSH:
+     cd "C:\Users\MAGMA BETON\Downloads\taqendurt-projet (1)"
+     git add public/*.png
+     git commit -m "feat(pwa): regenerate icons from current logo"
+     git push origin main
+  
+  6. APRÈS DÉPLOIEMENT, sur ton téléphone:
+     - Désinstaller l'ancienne PWA "Taqendurt" ou "Borboleta"
+     - Vider le cache du navigateur
+     - Fermer tous les onglets
+     - Rouvrir: https://myrobe.giize.com
+     - Réinstaller la PWA
+     
+     ⚠️ SANS DÉSINSTALLATION, L'ICÔNE NE CHANGERA PAS!
+
+═══════════════════════════════════════════════════════════════
+
+GUIDE DÉTAILLÉ: Voir REGENERATE_ICONS.md
+
+COMMITS À PUSHER (3):
+  21a8fa1 - fix(admin): show all nav items on mobile including Settings
+  805ec4c - docs: add comprehensive changelog for Nov 10 fixes
+  972f525 - docs: add icon regeneration guide
+
+COMMANDE POUR PUSHER:
+  git push origin main
+
+═══════════════════════════════════════════════════════════════
