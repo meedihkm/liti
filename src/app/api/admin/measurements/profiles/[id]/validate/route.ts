@@ -5,12 +5,13 @@ import { requireAdmin } from "@/lib/api";
 // POST /api/admin/measurements/profiles/[id]/validate — valider/rejeter un profil
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const auth = await requireAdmin(["admin"]);
     if ("response" in auth) return auth.response;
     
+    const { id } = await params;
     const adminEmail = auth.user.email;
     const body = await req.json();
 
@@ -29,7 +30,7 @@ export async function POST(
     // Créer la validation
     const validation = await db.measurementValidation.create({
       data: {
-        profileId: params.id,
+        profileId: id,
         validatedBy: adminEmail,
         status,
         comment: comment || null,
@@ -39,14 +40,14 @@ export async function POST(
     // Mettre à jour le statut du profil
     if (status === "approved") {
       await db.measurementProfile.update({
-        where: { id: params.id },
+        where: { id },
         data: { isValidated: true },
       });
     }
 
     return NextResponse.json({ validation });
   } catch (err) {
-    console.error(`[POST /api/admin/measurements/profiles/${params.id}/validate]`, err);
+    console.error(`[POST /api/admin/measurements/profiles/[id]/validate]`, err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Server error" },
       { status: err instanceof Error && err.message.includes("Unauthorized") ? 401 : 500 }
