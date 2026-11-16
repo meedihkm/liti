@@ -11,16 +11,42 @@ export async function GET(req: NextRequest) {
     const profiles = await db.measurementProfile.findMany({
       orderBy: { createdAt: "desc" },
       include: {
+        measurements: {
+          include: {
+            _count: {
+              select: {
+                validations: true,
+              },
+            },
+          },
+        },
         _count: {
           select: {
             measurements: true,
-            validations: true,
           },
         },
       },
     });
 
-    return NextResponse.json({ profiles });
+    // Calculer le nombre total de validations pour chaque profil
+    const profilesWithCounts = profiles.map((profile) => ({
+      id: profile.id,
+      userId: profile.userId,
+      sessionId: profile.sessionId,
+      name: profile.name,
+      relation: profile.relation,
+      createdAt: profile.createdAt,
+      updatedAt: profile.updatedAt,
+      _count: {
+        measurements: profile._count.measurements,
+        validations: profile.measurements.reduce(
+          (sum, m) => sum + (m._count?.validations || 0),
+          0
+        ),
+      },
+    }));
+
+    return NextResponse.json({ profiles: profilesWithCounts });
   } catch (err) {
     console.error("[GET /api/admin/measurements/profiles]", err);
     return NextResponse.json(

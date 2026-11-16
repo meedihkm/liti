@@ -37,9 +37,10 @@ import { cn } from "@/lib/utils";
 
 interface MeasurementProfile {
   id: string;
-  sessionToken: string;
-  name: string | null;
-  isValidated: boolean;
+  userId: string;
+  sessionId: string;
+  name: string;
+  relation: string;
   createdAt: string;
   updatedAt: string;
   _count: {
@@ -51,25 +52,30 @@ interface MeasurementProfile {
 interface MeasurementSet {
   id: string;
   profileId: string;
-  chest: number;
-  waist: number;
-  hips: number;
-  shoulders: number;
-  sleeve: number;
-  length: number;
+  method: string;
+  valuesJson: string;
+  fit: string;
+  displayUnit: string;
+  confirmedJson: string;
+  note: string;
   createdAt: string;
+  validations: MeasurementValidation[];
+}
+
+interface MeasurementValidation {
+  id: string;
+  measurementSetId: string;
+  status: string;
+  correctionsJson: string;
+  validatedBy: string;
+  validatedAt: string;
+  comment: string;
 }
 
 interface ProfileDetail {
   profile: MeasurementProfile;
   measurements: MeasurementSet[];
-  validations: Array<{
-    id: string;
-    validatedBy: string;
-    validatedAt: string;
-    status: "approved" | "rejected";
-    comment: string | null;
-  }>;
+  validations: MeasurementValidation[];
 }
 
 export function MeasurementsView() {
@@ -202,7 +208,12 @@ export function MeasurementsView() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {profiles.map((profile) => (
+              {profiles.map((profile) => {
+                // Calculer si le profil est entièrement validé
+                const isFullyValidated = profile._count.validations > 0 && 
+                  profile._count.measurements === profile._count.validations;
+                
+                return (
                 <TableRow key={profile.id}>
                   <TableCell className="font-medium">
                     {profile.name || (
@@ -212,14 +223,14 @@ export function MeasurementsView() {
                   <TableCell>{profile._count.measurements}</TableCell>
                   <TableCell>
                     <Badge
-                      variant={profile.isValidated ? "default" : "secondary"}
+                      variant={isFullyValidated ? "default" : "secondary"}
                       className={cn(
-                        profile.isValidated
+                        isFullyValidated
                           ? "bg-jade/15 text-jade"
                           : "bg-muted text-muted-foreground"
                       )}
                     >
-                      {profile.isValidated
+                      {isFullyValidated
                         ? t("admin.measurements.validated")
                         : t("admin.measurements.pending")}
                     </Badge>
@@ -240,7 +251,8 @@ export function MeasurementsView() {
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))}
+                );
+              })}
             </TableBody>
           </Table>
         </Card>
@@ -261,39 +273,70 @@ export function MeasurementsView() {
           {selectedProfile && (
             <div className="space-y-4">
               {/* Mesures */}
-              {selectedProfile.measurements.map((set, idx) => (
+              {selectedProfile.measurements.map((set, idx) => {
+                const values = JSON.parse(set.valuesJson) as {
+                  chest?: number;
+                  waist?: number;
+                  hips?: number;
+                  shoulders?: number;
+                  sleeve?: number;
+                  length?: number;
+                };
+                
+                return (
                 <div key={set.id} className="rounded-lg border p-4">
-                  <h4 className="mb-3 font-semibold">
-                    {t("admin.measurements.set")} {idx + 1}
-                  </h4>
-                  <div className="grid grid-cols-3 gap-3 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Poitrine:</span>
-                      <div className="font-semibold">{set.chest} cm</div>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Taille:</span>
-                      <div className="font-semibold">{set.waist} cm</div>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Hanches:</span>
-                      <div className="font-semibold">{set.hips} cm</div>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Épaules:</span>
-                      <div className="font-semibold">{set.shoulders} cm</div>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Manches:</span>
-                      <div className="font-semibold">{set.sleeve} cm</div>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Longueur:</span>
-                      <div className="font-semibold">{set.length} cm</div>
-                    </div>
+                  <div className="mb-3 flex items-center justify-between">
+                    <h4 className="font-semibold">
+                      {t("admin.measurements.set")} {idx + 1}
+                    </h4>
+                    <Badge variant="outline">{set.method}</Badge>
                   </div>
+                  <div className="grid grid-cols-3 gap-3 text-sm">
+                    {values.chest && (
+                      <div>
+                        <span className="text-muted-foreground">Poitrine:</span>
+                        <div className="font-semibold">{values.chest} cm</div>
+                      </div>
+                    )}
+                    {values.waist && (
+                      <div>
+                        <span className="text-muted-foreground">Taille:</span>
+                        <div className="font-semibold">{values.waist} cm</div>
+                      </div>
+                    )}
+                    {values.hips && (
+                      <div>
+                        <span className="text-muted-foreground">Hanches:</span>
+                        <div className="font-semibold">{values.hips} cm</div>
+                      </div>
+                    )}
+                    {values.shoulders && (
+                      <div>
+                        <span className="text-muted-foreground">Épaules:</span>
+                        <div className="font-semibold">{values.shoulders} cm</div>
+                      </div>
+                    )}
+                    {values.sleeve && (
+                      <div>
+                        <span className="text-muted-foreground">Manches:</span>
+                        <div className="font-semibold">{values.sleeve} cm</div>
+                      </div>
+                    )}
+                    {values.length && (
+                      <div>
+                        <span className="text-muted-foreground">Longueur:</span>
+                        <div className="font-semibold">{values.length} cm</div>
+                      </div>
+                    )}
+                  </div>
+                  {set.note && (
+                    <p className="mt-3 text-sm text-muted-foreground italic">
+                      Note: {set.note}
+                    </p>
+                  )}
                 </div>
-              ))}
+                );
+              })}
 
               {/* Validations précédentes */}
               {selectedProfile.validations.length > 0 && (
@@ -314,7 +357,7 @@ export function MeasurementsView() {
                         <Badge
                           variant={val.status === "approved" ? "default" : "destructive"}
                         >
-                          {val.status === "approved" ? "Approuvé" : "Rejeté"}
+                          {val.status === "approved" ? "Approuvé" : val.status === "needs_correction" ? "Correction" : val.status}
                         </Badge>
                       </div>
                       {val.comment && (
@@ -331,33 +374,31 @@ export function MeasurementsView() {
               )}
 
               {/* Formulaire de validation */}
-              {!selectedProfile.profile.isValidated && (
-                <div className="space-y-3">
-                  <Label htmlFor="validation-comment">
-                    {t("admin.measurements.comment")}
-                  </Label>
-                  <Textarea
-                    id="validation-comment"
-                    value={validationComment}
-                    onChange={(e) => setValidationComment(e.target.value)}
-                    placeholder={t("admin.measurements.commentPlaceholder")}
-                    rows={3}
-                  />
-                </div>
-              )}
+              <div className="space-y-3">
+                <Label htmlFor="validation-comment">
+                  {t("admin.measurements.comment")}
+                </Label>
+                <Textarea
+                  id="validation-comment"
+                  value={validationComment}
+                  onChange={(e) => setValidationComment(e.target.value)}
+                  placeholder={t("admin.measurements.commentPlaceholder")}
+                  rows={3}
+                />
+              </div>
             </div>
           )}
 
           <DialogFooter>
-            {selectedProfile && !selectedProfile.profile.isValidated ? (
+            {selectedProfile ? (
               <>
                 <Button
                   variant="outline"
-                  onClick={() => validateProfile("rejected")}
+                  onClick={() => validateProfile("needs_correction")}
                   disabled={validating}
                 >
                   <X className="h-4 w-4" />
-                  {t("admin.measurements.reject")}
+                  Correction nécessaire
                 </Button>
                 <Button
                   onClick={() => validateProfile("approved")}

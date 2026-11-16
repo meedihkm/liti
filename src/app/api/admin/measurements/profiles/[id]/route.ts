@@ -18,14 +18,15 @@ export async function GET(
       include: {
         measurements: {
           orderBy: { createdAt: "desc" },
-        },
-        validations: {
-          orderBy: { validatedAt: "desc" },
+          include: {
+            validations: {
+              orderBy: { validatedAt: "desc" },
+            },
+          },
         },
         _count: {
           select: {
             measurements: true,
-            validations: true,
           },
         },
       },
@@ -38,7 +39,26 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ profile, measurements: profile.measurements, validations: profile.validations });
+    // Aplatir les validations de tous les measurement sets
+    const allValidations = profile.measurements.flatMap((m) => m.validations);
+
+    return NextResponse.json({ 
+      profile: {
+        id: profile.id,
+        userId: profile.userId,
+        sessionId: profile.sessionId,
+        name: profile.name,
+        relation: profile.relation,
+        createdAt: profile.createdAt,
+        updatedAt: profile.updatedAt,
+        _count: {
+          measurements: profile._count.measurements,
+          validations: allValidations.length,
+        },
+      },
+      measurements: profile.measurements,
+      validations: allValidations,
+    });
   } catch (err) {
     console.error(`[GET /api/admin/measurements/profiles/[id]]`, err);
     return NextResponse.json(
