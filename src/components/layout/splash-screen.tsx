@@ -58,7 +58,7 @@ export function SplashScreen() {
               <YazMark className="h-16 w-16" />
             </span>
             <span className="font-display text-sm uppercase tracking-[0.35em] text-muted-foreground">
-              Taqendurt
+              Borboleta
             </span>
           </motion.div>
         </motion.div>

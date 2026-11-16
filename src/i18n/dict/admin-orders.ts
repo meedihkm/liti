@@ -184,7 +184,7 @@ export const adminOrders = {
       passwordLabel: "كلمة المرور",
       submit: "تسجيل الدخول",
       failed: "تعذّر تسجيل الدخول، حاول مجدداً.",
-      demoHint: "تجريبي — admin@taqendurt.dz / Admin!2026",
+      demoHint: "تجريبي — admin@borboleta.dz / Admin!2026",
       backToSite: "العودة إلى المتجر",
     },
     dash: {

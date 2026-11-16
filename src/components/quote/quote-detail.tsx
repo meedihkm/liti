@@ -221,7 +221,7 @@ export function QuoteDetail({ quote }: { quote: Quote }) {
                     }`}
                   >
                     <p className="text-sm font-medium mb-1">
-                      {msg.senderName || (isCustomer ? 'Vous' : 'Taqendurt')}
+                      {msg.senderName || (isCustomer ? 'Vous' : 'Borboleta')}
                     </p>
                     <p className="whitespace-pre-wrap">{msg.message}</p>
                     {attachments.length > 0 && (

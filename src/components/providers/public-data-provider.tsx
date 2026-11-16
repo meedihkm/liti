@@ -77,7 +77,7 @@ export function PublicDataProvider({ children }: { children: ReactNode }) {
     (message?: string) => {
       const number = meta.settings.whatsapp?.replace(/\D/g, "") || "213550123456";
       const text = encodeURIComponent(
-        message ?? "Bonjour Taqendurt, j'ai une question sur vos robes kabyles."
+        message ?? "Bonjour Borboleta, j'ai une question sur vos robes kabyles."
       );
       return `https://wa.me/${number}?text=${text}`;
     },

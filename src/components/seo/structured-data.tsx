@@ -40,7 +40,7 @@ type BreadcrumbItem = {
 
 export function OrganizationStructuredData() {
   const data: OrganizationData = {
-    name: 'Taqendurt',
+    name: 'Borboleta',
     url: 'https://myrobe-giize.com',
     logo: 'https://myrobe-giize.com/images/og-cover.jpg',
     description: 'Robes kabyles traditionnelles et modernes sur-mesure. Broderie artisanale, livraison dans les 58 wilayas d\'Algérie.',
@@ -58,8 +58,8 @@ export function OrganizationStructuredData() {
       availableLanguage: ['fr', 'ar', 'kab'],
     },
     sameAs: [
-      'https://facebook.com/taqendurt',
-      'https://instagram.com/taqendurt',
+      'https://facebook.com/borboleta',
+      'https://instagram.com/borboleta',
     ],
   };
 

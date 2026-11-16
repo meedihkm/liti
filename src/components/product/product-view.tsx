@@ -57,7 +57,7 @@ export function ProductView({ id }: { id: string }) {
       description: L(product, "description"),
       image: product.images.map((i) => i.url),
       category: product.category?.name,
-      brand: { "@type": "Brand", name: "Taqendurt" },
+      brand: { "@type": "Brand", name: "Borboleta" },
       offers: {
         "@type": "Offer",
         priceCurrency: "DZD",

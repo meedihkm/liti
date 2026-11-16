@@ -453,8 +453,8 @@ export function ContactView() {
                 <a
                   href={whatsappLink(
                     lang === "ar"
-                      ? "مرحباً تاقندورث، لدي سؤال."
-                      : "Bonjour Taqendurt, j'ai une question."
+                      ? "مرحباً بوربوليتا، لدي سؤال."
+                      : "Bonjour Borboleta, j'ai une question."
                   )}
                   target="_blank"
                   rel="noopener noreferrer"

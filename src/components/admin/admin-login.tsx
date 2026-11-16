@@ -83,7 +83,7 @@ export function AdminLogin({ onLogin }: { onLogin: (user: AdminUserDTO) => void 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="ps-9 h-11"
-                  placeholder="admin@taqendurt.dz"
+                  placeholder="admin@borboleta.dz"
                   aria-invalid={Boolean(error) || undefined}
                 />
               </div>

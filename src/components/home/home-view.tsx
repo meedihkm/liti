@@ -436,8 +436,8 @@ export function HomeView() {
             <a
               href={whatsappLink(
                 lang === "ar"
-                  ? "مرحبًا تاقندورث، أريد مناقشة طلب فستان."
-                  : "Bonjour Taqendurt, je souhaite discuter d'une commande de robe."
+                  ? "مرحبًا بوربوليتا، أريد مناقشة طلب فستان."
+                  : "Bonjour Borboleta, je souhaite discuter d'une commande de robe."
               )}
               target="_blank"
               rel="noopener noreferrer"

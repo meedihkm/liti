@@ -47,7 +47,7 @@ export function Footer() {
                 <YazMark className="h-8 w-8" />
               </span>
               <span className="font-display text-lg font-semibold">
-                {(L(settings, "siteName") || "Taqendurt").split("—")[0].trim()}
+                {(L(settings, "siteName") || "Borboleta").split("—")[0].trim()}
               </span>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
@@ -173,7 +173,7 @@ export function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-3 pt-6 text-center text-xs text-muted-foreground sm:flex-row sm:text-start">
           <p>
-            © {new Date().getFullYear()} {(L(settings, "siteName") || "Taqendurt").split("—")[0].trim()}. {t("common.footer.rights")}.
+            © {new Date().getFullYear()} {(L(settings, "siteName") || "Borboleta").split("—")[0].trim()}. {t("common.footer.rights")}.
           </p>
           <p className="flex items-center gap-1.5">
             <span className="text-gold">ⵣ</span> {t("common.footer.madeIn")}

@@ -268,8 +268,8 @@ export function AboutView() {
                     window.open(
                       whatsappLink(
                         lang === "ar"
-                          ? "مرحباً تاقندورث، أريد مناقشة فستان."
-                          : "Bonjour Taqendurt, j'aimerais discuter d'une robe."
+                          ? "مرحباً بوربوليتا، أريد مناقشة فستان."
+                          : "Bonjour Borboleta, j'aimerais discuter d'une robe."
                       ),
                       "_blank",
                       "noopener,noreferrer"

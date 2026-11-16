@@ -36,7 +36,7 @@ export function Navbar() {
   }, [])
 
   const count = mounted ? cartCount(items) : 0
-  const siteName = L(settings, "siteName") || "Taqendurt"
+  const siteName = L(settings, "siteName") || "Borboleta"
 
   const links: { to: string; label: string }[] = [
     { to: "/", label: t("common.nav.home") },

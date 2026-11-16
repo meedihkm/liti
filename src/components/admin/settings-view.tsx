@@ -380,7 +380,7 @@ export function SettingsView({ user }: { user: AdminUserDTO }) {
             label={s("fEmail")}
             value={form.email}
             onChange={(v) => patch("email", v)}
-            ph="contact@taqendurt.dz"
+            ph="contact@borboleta.dz"
             type="email"
           />
           <BiField
@@ -556,7 +556,7 @@ export function SettingsView({ user }: { user: AdminUserDTO }) {
             label={s("fAdminEmail")}
             value={form.adminEmail}
             onChange={(v) => patch("adminEmail", v)}
-            ph="admin@taqendurt.dz"
+            ph="admin@borboleta.dz"
             type="email"
           />
           <p className="flex items-center gap-2 rounded-xl bg-muted/40 px-3 py-2.5 text-xs text-muted-foreground">

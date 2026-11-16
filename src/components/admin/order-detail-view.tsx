@@ -454,7 +454,7 @@ export function OrderDetailView({ id, user }: { id: string; user: AdminUserDTO }
       <div className="mx-auto max-w-2xl text-neutral-900">
         <div className="flex items-start justify-between border-b-2 border-neutral-900 pb-3">
           <div>
-            <p className="text-lg font-bold uppercase tracking-wide">Taqendurt</p>
+            <p className="text-lg font-bold uppercase tracking-wide">Borboleta</p>
             <p className="mt-1 text-sm font-semibold">{t("admin.orders.sheet.title")}</p>
             <p className="mt-1 text-sm">
               {t("admin.orders.sheet.order")} : <span className="font-bold">{order.number}</span>
