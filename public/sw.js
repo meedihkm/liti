@@ -1,10 +1,13 @@
-// Service Worker — PWA Taqendurt
+// Service Worker — PWA Borboleta
 // Stratégies de cache simples sans bibliothèque externe
 
-const CACHE_VERSION = "taqendurt-v1";
+const CACHE_VERSION = "v2"; // Incrémenter à chaque changement de code
 const SHELL_CACHE = `shell-${CACHE_VERSION}`;
 const ASSETS_CACHE = `assets-${CACHE_VERSION}`;
 const API_CACHE = `api-${CACHE_VERSION}`;
+
+// Toutes les versions de cache utilisées
+const CURRENT_CACHES = [SHELL_CACHE, ASSETS_CACHE, API_CACHE];
 
 // Fichiers à précacher (shell de l'application)
 const SHELL_FILES = [
@@ -24,20 +27,26 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// Activation : nettoyage des anciens caches
+// Activation : nettoyage des anciens caches + prise de contrôle immédiate
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activate");
+  console.log("[SW] Activate - purging old caches");
   event.waitUntil(
     caches
       .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key.startsWith("taqendurt-") && !key.includes(CACHE_VERSION))
-            .map((key) => caches.delete(key))
-        )
-      )
-      .then(() => self.clients.claim())
+      .then((keys) => {
+        // Supprimer tous les caches qui ne sont pas dans la liste actuelle
+        const deletePromises = keys
+          .filter((key) => !CURRENT_CACHES.includes(key))
+          .map((key) => {
+            console.log("[SW] Deleting old cache:", key);
+            return caches.delete(key);
+          });
+        return Promise.all(deletePromises);
+      })
+      .then(() => {
+        console.log("[SW] Claiming clients for immediate control");
+        return self.clients.claim();
+      })
   );
 });
 
@@ -47,34 +56,11 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
 
   // Ne pas cacher :
-  // - Routes admin
+  // - TOUTES les routes /api/* (surtout /api/admin/*)
   // - Mutations (POST/PUT/PATCH/DELETE)
-  // - /api/orders, /api/track (données sensibles)
   // - Réponses avec Set-Cookie (authentifiées)
-  if (
-    url.pathname.startsWith("/api/admin") ||
-    url.pathname === "/api/orders" ||
-    url.pathname === "/api/track" ||
-    request.method !== "GET"
-  ) {
+  if (url.pathname.startsWith("/api/") || request.method !== "GET") {
     return event.respondWith(fetch(request));
-  }
-
-  // API publique : stale-while-revalidate
-  if (url.pathname.startsWith("/api/")) {
-    return event.respondWith(
-      caches.open(API_CACHE).then(async (cache) => {
-        const cached = await cache.match(request);
-        const fetchPromise = fetch(request).then((response) => {
-          // Ne cacher que les réponses OK sans authentification
-          if (response.ok && !response.headers.has("set-cookie")) {
-            cache.put(request, response.clone());
-          }
-          return response;
-        });
-        return cached || fetchPromise;
-      })
-    );
   }
 
   // Assets (images, fonts, etc.) : cache-first
