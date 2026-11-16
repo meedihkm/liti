@@ -70,9 +70,16 @@ export function AdminApp() {
   const [checking, setChecking] = useState(true)
 
   const checkSession = useCallback(() => {
+    console.log("[AdminApp] Checking session...")
     api<{ user: AdminUserDTO }>("/api/admin/me")
-      .then((d) => setUser(d.user))
-      .catch(() => setUser(null))
+      .then((d) => {
+        console.log("[AdminApp] Session valid, user:", d.user)
+        setUser(d.user)
+      })
+      .catch((err) => {
+        console.log("[AdminApp] Session check failed:", err)
+        setUser(null)
+      })
       .finally(() => setChecking(false))
   }, [])
 
@@ -105,22 +112,57 @@ export function AdminApp() {
   const sub = segments.slice(1)
   const section = sub[0] ?? ""
 
+  console.log("[AdminApp] Rendering with user:", user.email, "lang:", lang, "section:", section)
+
   let view: React.ReactNode
-  switch (section) {
-    case "":
-      view = <DashboardView user={user} />
-      break
-    case "orders":
-      view = sub[1] ? <OrderDetailView id={sub[1]} user={user} /> : <OrdersView user={user} />
-      break
-    case "products":
-      if (sub[1] === "new") view = <ProductEditor />
-      else if (sub[1]) view = <ProductEditor id={sub[1]} />
-      else view = <ProductsView />
-      break
-    case "options":
-      view = <OptionsView />
-      break
+  try {
+    switch (section) {
+      case "":
+        view = <DashboardView user={user} />
+        break
+      case "orders":
+        view = sub[1] ? <OrderDetailView id={sub[1]} user={user} /> : <OrdersView user={user} />
+        break
+      case "products":
+        if (sub[1] === "new") view = <ProductEditor />
+        else if (sub[1]) view = <ProductEditor id={sub[1]} />
+        else view = <ProductsView />
+        break
+      case "options":
+        view = <OptionsView />
+        break
+      case "measurements":
+        view = <MeasurementsView />
+        break
+      case "shipping":
+        view = <ShippingView />
+        break
+      case "messages":
+        view = <MessagesView />
+        break
+      case "settings":
+        view = <SettingsView user={user} />
+        break
+      default:
+        view = <DashboardView user={user} />
+    }
+  } catch (error) {
+    console.error("[AdminApp] Error rendering view:", error)
+    view = (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 font-semibold mb-2">Erreur de rendu</p>
+          <p className="text-sm text-muted-foreground">{String(error)}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-gold text-white rounded"
+          >
+            Recharger la page
+          </button>
+        </div>
+      </div>
+    )
+  }
     case "measurements":
       view = <MeasurementsView />
       break
