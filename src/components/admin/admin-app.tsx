@@ -32,6 +32,7 @@ import { YazMark } from "@/components/layout/berber-divider";
 import type { AdminUserDTO } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { AdminLogin } from "./admin-login";
+import { AdminErrorBoundary } from "./admin-error-boundary";
 import { DashboardView } from "./dashboard-view";
 import { OrdersView } from "./orders-view";
 import { OrderDetailView } from "./order-detail-view";
@@ -70,14 +71,11 @@ export function AdminApp() {
   const [checking, setChecking] = useState(true)
 
   const checkSession = useCallback(() => {
-    console.log("[AdminApp] Checking session...")
     api<{ user: AdminUserDTO }>("/api/admin/me")
       .then((d) => {
-        console.log("[AdminApp] Session valid, user:", d.user)
         setUser(d.user)
       })
-      .catch((err) => {
-        console.log("[AdminApp] Session check failed:", err)
+      .catch(() => {
         setUser(null)
       })
       .finally(() => setChecking(false))
@@ -112,70 +110,37 @@ export function AdminApp() {
   const sub = segments.slice(1)
   const section = sub[0] ?? ""
 
-  console.log("[AdminApp] Rendering with user:", user.email, "lang:", lang, "section:", section)
-
+  // Déterminer quelle vue afficher selon la route
   let view: React.ReactNode
-  try {
-    switch (section) {
-      case "":
-        view = <DashboardView user={user} />
-        break
-      case "orders":
-        view = sub[1] ? <OrderDetailView id={sub[1]} user={user} /> : <OrdersView user={user} />
-        break
-      case "products":
-        if (sub[1] === "new") view = <ProductEditor />
-        else if (sub[1]) view = <ProductEditor id={sub[1]} />
-        else view = <ProductsView />
-        break
-      case "options":
-        view = <OptionsView />
-        break
-      case "measurements":
-        view = <MeasurementsView />
-        break
-      case "shipping":
-        view = <ShippingView />
-        break
-      case "messages":
-        view = <MessagesView />
-        break
-      case "settings":
-        view = <SettingsView user={user} />
-        break
-      default:
-        view = <DashboardView user={user} />
-    }
-  } catch (error) {
-    console.error("[AdminApp] Error rendering view:", error)
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    const errorStack = error instanceof Error ? error.stack : '';
-    view = (
-      <div className="flex min-h-screen items-center justify-center p-4">
-        <div className="max-w-2xl w-full text-center space-y-4">
-          <p className="text-red-500 font-semibold text-lg">Erreur de rendu du dashboard</p>
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-left">
-            <p className="font-mono text-sm text-red-700 dark:text-red-300">{errorMessage}</p>
-            {errorStack && (
-              <pre className="mt-2 text-xs text-red-600 dark:text-red-400 overflow-auto max-h-40">
-                {errorStack}
-              </pre>
-            )}
-          </div>
-          <div className="text-sm text-muted-foreground space-y-2">
-            <p>Section: {section}</p>
-            <p>User: {user.email}</p>
-            <p>Lang: {lang}</p>
-          </div>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-4 px-6 py-3 bg-gold text-white rounded-lg hover:bg-gold-strong"
-          >
-            Recharger la page
-          </button>
-        </div>
-      </div>
-    )
+  switch (section) {
+    case "":
+      view = <DashboardView user={user} />
+      break
+    case "orders":
+      view = sub[1] ? <OrderDetailView id={sub[1]} user={user} /> : <OrdersView user={user} />
+      break
+    case "products":
+      if (sub[1] === "new") view = <ProductEditor />
+      else if (sub[1]) view = <ProductEditor id={sub[1]} />
+      else view = <ProductsView />
+      break
+    case "options":
+      view = <OptionsView />
+      break
+    case "measurements":
+      view = <MeasurementsView />
+      break
+    case "shipping":
+      view = <ShippingView />
+      break
+    case "messages":
+      view = <MessagesView />
+      break
+    case "settings":
+      view = <SettingsView user={user} />
+      break
+    default:
+      view = <DashboardView user={user} />
   }
 
   const navItems = NAV.filter((n) => !n.adminOnly || user.role === "admin")
@@ -283,7 +248,9 @@ export function AdminApp() {
           })}
         </nav>
 
-        <main className="min-w-0 flex-1 pb-20 md:pb-0">{view}</main>
+        <main className="min-w-0 flex-1 pb-20 md:pb-0">
+          <AdminErrorBoundary>{view}</AdminErrorBoundary>
+        </main>
       </div>
     </div>
   )

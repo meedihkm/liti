@@ -62,7 +62,17 @@ export function DashboardView({ user }: { user: AdminUserDTO }) {
   const load = useCallback(() => {
     api<AdminStatsDTO>("/api/admin/stats")
       .then((d) => {
-        setStats(d);
+        // Validation défensive : si le contrat est cassé, afficher des valeurs par défaut
+        const validatedStats: AdminStatsDTO = {
+          newOrders: typeof d.newOrders === "number" ? d.newOrders : 0,
+          pendingOrders: typeof d.pendingOrders === "number" ? d.pendingOrders : 0,
+          monthRevenue: typeof d.monthRevenue === "number" ? d.monthRevenue : 0,
+          totalOrders: typeof d.totalOrders === "number" ? d.totalOrders : 0,
+          unreadMessages: typeof d.unreadMessages === "number" ? d.unreadMessages : 0,
+          topProducts: Array.isArray(d.topProducts) ? d.topProducts : [],
+          recentOrders: Array.isArray(d.recentOrders) ? d.recentOrders : [],
+        };
+        setStats(validatedStats);
         setError("");
       })
       .catch((e) => setError(e instanceof ApiError ? e.message : t("admin.dash.loadError")));
