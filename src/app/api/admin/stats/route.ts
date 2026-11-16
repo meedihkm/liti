@@ -12,7 +12,9 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(req: NextRequest) {
   try {
-    await requireAdmin(req);
+    // Staff OK pour consulter les stats selon API_CONTRACT.md
+    const auth = await requireAdmin();
+    if ("response" in auth) return auth.response;
 
     const now = new Date();
     const twoDaysAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000);
