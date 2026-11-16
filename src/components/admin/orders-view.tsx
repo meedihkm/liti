@@ -54,8 +54,9 @@ interface OrdersPage {
 }
 
 /** Date + heure selon la langue (rendu client après fetch) */
-function formatDateTime(iso: string, lang: "fr" | "ar"): string {
-  return new Intl.DateTimeFormat(lang === "ar" ? "ar-DZ" : "fr-FR", {
+function formatDateTime(iso: string, lang: "fr" | "ar" | "kab"): string {
+  const locale = lang === "ar" ? "ar-DZ" : "fr-FR";
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",

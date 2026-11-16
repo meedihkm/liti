@@ -69,8 +69,9 @@ function loc(obj: object, key: string, lang: "fr" | "ar" | "kab"): string {
 
 const iconBtn = "size-10";
 
-function occasionLabel(value: string, lang: "fr" | "ar"): string {
+function occasionLabel(value: string, lang: "fr" | "ar" | "kab"): string {
   const occ = OCCASIONS.find((o) => o.value === value);
+  // kab uses fr labels
   return occ ? (lang === "ar" ? occ.ar : occ.fr) : "";
 }
 
